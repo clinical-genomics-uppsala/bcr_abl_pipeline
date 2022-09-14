@@ -31,20 +31,74 @@ validate(samples, schema="../schemas/samples.schema.yaml")
 
 ### Read and validate units file
 
-units = pandas.read_table(config["units"], dtype=str).set_index(["sample", "type", "flowcell", "lane", "barcode"], drop=False).sort_index()
+units = (
+    pandas.read_table(config["units"], dtype=str)
+    .set_index(["sample", "type", "flowcell", "lane", "barcode"], drop=False)
+    .sort_index()
+)
 validate(units, schema="../schemas/units.schema.yaml")
 
+
+def generate_read_group_star(wildcards):
+    return "--outSAMattrRGline  ID:{} SM:{} PL:Illumina PU:{} LB:{}".format(
+        "{}_{}".format(wildcards.sample, wildcards.type),
+        "{}_{}".format(wildcards.sample, wildcards.type),
+        "{}_{}".format(wildcards.sample, wildcards.type),
+        "{}_{}".format(wildcards.sample, wildcards.type),
+        "{}_{}".format(wildcards.sample, wildcards.type),
+    )
+
+
 ### Set wildcard constraints
-
-
 wildcard_constraints:
     sample="|".join(samples.index),
     type="N|T|R",
 
 
 def compile_output_list(wildcards):
-    return [
-        "bcr_abl_pipeline/dummy/%s_%s.dummy.txt" % (sample, t)
-        for sample in get_samples(samples)
-        for t in get_unit_types(units, sample)
-    ]
+    output_files = ["qc/multiqc/multiqc_RNA.html"]
+    output_files.append(
+        [
+            "alignment/star/%s_%s.bam%s" % (sample, type, suffix)
+            for sample in get_samples(samples)
+            for type in get_unit_types(units, sample)
+            for suffix in ["", ".bai"]
+        ]
+    )
+    output_files.append(
+        [
+            "fusions/arriba/%s_%s.fusions.tsv" % (sample, type)
+            for sample in get_samples(samples)
+            for type in get_unit_types(units, sample)
+        ]
+    )
+    output_files.append(
+        [
+            "fusions/arriba_draw_fusion/%s_%s.pdf" % (sample, type)
+            for sample in get_samples(samples)
+            for type in get_unit_types(units, sample)
+        ]
+    )
+    output_files.append(
+        [
+            "fusions/star_fusion/%s_%s/star-fusion.fusion_predictions.tsv" % (sample, type)
+            for sample in get_samples(samples)
+            for type in get_unit_types(units, sample)
+        ]
+    )
+    output_files.append(
+        [
+            "snv_indels/gatk_mutect2/%s_%s.normalized.sorted.vcf.gz%s" % (sample, type, suffix)
+            for sample in get_samples(samples)
+            for type in get_unit_types(units, sample)
+            for suffix in ["", ".tbi"]
+        ]
+    )
+    output_files.append(
+        [
+            "snv_indels/gatk_mutect2/%s_%s.normalized.sorted.branford.vcf" % (sample, type)
+            for sample in get_samples(samples)
+            for type in get_unit_types(units, sample)
+        ]
+    )
+    return output_files
