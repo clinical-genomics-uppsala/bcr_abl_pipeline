@@ -73,7 +73,7 @@ gatk_mutect2:
 
 gatk_mutect2_filter:
   container: "docker://hydragenetics/gatk4:4.1.9.0"
-  extra: "--max-alt-allele-count 3 --max-events-in-region 20 --distance-on-haplotype 1000"
+  extra: "--max-alt-allele-count 3 --max-events-in-region 20"
 
 gatk_mutect2_merge_stats:
   container: "docker://hydragenetics/gatk4:4.1.9.0"

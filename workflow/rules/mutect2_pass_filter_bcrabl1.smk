@@ -3,7 +3,6 @@ __copyright__ = "Copyright 2022, Arielle R. Munters"
 __email__ = "arielle.munters@scilifelab.uu.se"
 __license__ = "GPL-3"
 
-
 rule mutect2_pass_filter_bcrabl1:
     input:
         vcf="snv_indels/gatk_mutect2/{sample}_{type}.merged.softfiltered.vcf.gz",
@@ -12,10 +11,10 @@ rule mutect2_pass_filter_bcrabl1:
     params:
         extra=config.get("mutect2_pass_filter_bcrabl1", {}).get("extra", ""),
     log:
-        "bcr_abl_pipeline/mutect2_pass_filter_bcrabl1/{sample}_{type}.output.log",
+        "snv_indels/gatk_mutect2/{sample}_{type}.bcrabl1.merged.vcf.gz.log",
     benchmark:
         repeat(
-            "bcr_abl_pipeline/mutect2_pass_filter_bcrabl1/{sample}_{type}.output.benchmark.tsv",
+            "snv_indels/gatk_mutect2/{sample}_{type}.bcrabl1.merged.vcf.gz.benchmark.tsv",
             config.get("mutect2_pass_filter_bcrabl1", {}).get("benchmark_repeats", 1),
         )
     threads: config.get("mutect2_pass_filter_bcrabl1", {}).get("threads", config["default_resources"]["threads"])
