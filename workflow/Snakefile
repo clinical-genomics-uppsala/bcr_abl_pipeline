@@ -5,7 +5,9 @@ __license__ = "GPL-3"
 
 
 include: "rules/common.smk"
+include: "rules/convert_pdf.smk"
 include: "rules/mutect2_pass_filter_bcrabl1.smk"
+include: "rules/summary_report.smk"
 
 
 report: "report/workflow.rst"
