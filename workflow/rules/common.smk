@@ -96,7 +96,7 @@ def compile_output_list(wildcards):
     )
     output_files.append(
         [
-            "snv_indels/gatk_mutect2/%s_%s.normalized.sorted.branford.vcf" % (sample, type)
+            "Results/%s_%s_summary.xlsx" % (sample, type)
             for sample in get_samples(samples)
             for type in get_unit_types(units, sample)
         ]
