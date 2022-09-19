@@ -54,6 +54,9 @@ arriba_draw_fusion:
   gtf: "/data/ref_genomes/hg19/gtf/hg19.refGene.gtf"
   protein_domains: "/data/ref_data/arriba/arriba_v2.3.0/database/protein_domains_hg19_hs37d5_GRCh37_v2.3.0.gff3"
 
+convert_pdf:
+  container: "docker://dpokidov/imagemagick:7.1.0-47-ubuntu"
+
 fastp_pe:
    container: "docker://hydragenetics/fastp:0.20.1"
    extra: "-x "

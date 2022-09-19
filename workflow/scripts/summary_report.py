@@ -62,31 +62,28 @@ for line in branfordSNV_dup:
 
 
 fusion_lines = []
+fusionHeading = ["Gene1", "Gene2", "Gene1_breakpoint", "Gene2_breakpoint", "BCR-ABL1 Type", "Fusion Type", "Split reads1", "Split reads2", "Discordant Mates", "Coverage gene1", "Coverage gene2", "Confidence"]
 with open(snakemake.input.arriba_tsv, 'r') as tsv_arriba:
-    import pdb; pdb.set_trace()
     headerIndex=tsv_arriba.readline().strip().split("\t")
     for lline in tsv_arriba:
         line = lline.strip().split("\t")
         if line[headerIndex.index("confidence")] == "medium" or line[headerIndex.index("confidence")] == "high":
-            gene1_pos = headerIndex.index("breakpoint1") # get exons how?
-            gene2_pos = headerIndex.index("breakpoint2")
+            gene1_pos = line[headerIndex.index("breakpoint1")] # get exons how?
+            gene2_pos = line[headerIndex.index("breakpoint2")]
             fusion_type = ""
-            if gene2_pos.split(":")[0] == 'chr9' and gene1_pos.split(":")[0] == 'chr22' and line[headerIndex.index("#gene1")] == "BCR" and line[headerIndex.index("gene2")] == "ABL1":
-                if int(gene1_pos.split(":")[1]) >= 23627388:
+            if line[headerIndex.index("#gene1")] == "BCR" and line[headerIndex.index("gene2")] == "ABL1":
+                if int(gene1_pos.split(":")[1]) <= 23627388:
                     fusion_type = "Minor"
                 elif int(gene1_pos.split(":")[1]) >= 23629346 and int(gene1_pos.split(":")[1]) <= 23637342 :
                     fusion_type = "Major"
                 elif int(gene1_pos.split(":")[1]) >= 23651611:
                     fusion_type = " Micro"
 
-            outline =
-                [
-                    line[headerIndex.index("#gene1")], line[headerIndex.index("gene2")], gene1_pos, gene2_pos, fusion_type,
+            outline = [line[headerIndex.index("#gene1")], line[headerIndex.index("gene2")], gene1_pos, gene2_pos, fusion_type,
                     line[headerIndex.index("type")], line[headerIndex.index("split_reads1")],
                     line[headerIndex.index("split_reads2")], line[headerIndex.index("discordant_mates")],
                     line[headerIndex.index("coverage1")], line[headerIndex.index("coverage2")],
-                    line[headerIndex.index("confidence")]
-                ]
+                    line[headerIndex.index("confidence")]]
             fusion_lines.append(outline)
 
 
@@ -98,7 +95,6 @@ worksheetOver = workbook.add_worksheet("Overview")
 worksheetBran = workbook.add_worksheet("Branford variants")
 worksheetSNV = workbook.add_worksheet("SNV variants")
 worksheetFusion = workbook.add_worksheet("Fusion")
-worksheetCov = workbook.add_worksheet("Coverage")
 
 headingFormat = workbook.add_format({'bold': True, 'font_size': 18})
 lineFormat = workbook.add_format({'top': 1})
@@ -123,7 +119,6 @@ worksheetOver.write(6, 0, "Sheets:", tableHeadFormat)
 worksheetOver.write_url(7, 0, "internal:'Branford variants'!A1", string="Branford variants")
 worksheetOver.write_url(8, 0, "internal:'SNV variants'!A1", string="ABL1 variants")
 worksheetOver.write_url(9, 0, "internal:'Fusions'!A1", string="Fusions")
-worksheetOver.write_url(10, 0, "internal:'Coverage'!A1", string="Coverage")
 worksheetOver.write_row(11, 0, emptyList, lineFormat)
 
 worksheetOver.write(14, 0 , "Branford list used: "+str(snakemake.input.branford))
@@ -158,12 +153,15 @@ for line in allSNVs:
     row += 1
 
 ''' Fusion sheet '''
+worksheetFusion.set_column('C:D', 15)
+worksheetFusion.set_column('F:F', 15)
 worksheetFusion.write("A1", "Fusions detected with Arriba", headingFormat)
-worksheetFusion.write("A3", "sample: " + str(sample))
+worksheetFusion.write("A3", "Sample: " + str(sample))
+worksheetFusion.write("A5", "Primary fusion call from Arriba")
 
-worksheetFusion.insert_image("A5", snakemake.input.jpg)
-worksheetFusion.write_row("A20", fusionHeading, tableHeadFormat)
-row = 20
+worksheetFusion.insert_image("A6", snakemake.input.jpg, {'x_scale': 0.25, 'y_scale': 0.25})
+worksheetFusion.write_row("A40", fusionHeading, tableHeadFormat)
+row = 40
 for line in fusion_lines:
     worksheetFusion.write_row(row, col, line)
     row += 1
