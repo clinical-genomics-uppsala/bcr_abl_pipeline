@@ -24,7 +24,7 @@ with open(snakemake.input.branford, 'r') as branfordfile:
     for line in branfordfile:
         branfordVariants.append(line.strip().split("\t"))
 
-branfordSNV_dup = []
+branfordSNV = []
 branfordHeader = ["Mutation", "Transcript", "Chr", "Pos", "Ref", "Alt", "Allelic Freq", "Allelic Depth", "Depth"]
 
 allSNVs = []
@@ -46,21 +46,16 @@ for record in vcf.fetch():
             af = str(round(record.info["AF"][index], 3))
             a_dp = str(record.samples[sample].get("AD")[index+1])
             outline = [b_line[6], b_line[3], b_line[0], str(b_line[2]), b_line[4], b_line[5], af, a_dp, dp]
-            branfordSNV_dup.append(outline)
+            branfordSNV.append(outline)
             break
-        else:
-            outline = [b_line[6], b_line[3], b_line[0], str(b_line[2]), b_line[4], b_line[5], "", "", ""]
-            branfordSNV_dup.append(outline)
 
-# Remove duplicated lines and add dp from mosdepth on non-call regions
-branfordSNV = []
-for line in branfordSNV_dup:
-    if line not in branfordSNV:
-        if line[8] == "":
-            line[8] = str(depth_dict[line[1]])
-        branfordSNV.append(line)
+# Add branfordVariants that were not found and and depth from mosdepth
+for b_line in branfordVariants:
+    ordered_b_line = [b_line[6], b_line[3], b_line[0], str(b_line[2]), b_line[4], b_line[5]]
+    if ordered_b_line not in  [outlines[0:6] for outlines in branfordSNV]:
+        branfordSNV.append(ordered_b_line + ["", "", str(depth_dict[ordered_b_line[1]])])
 
-
+# Add fusions from Arriba
 fusion_lines = []
 fusionHeading = ["Gene1", "Gene2", "Gene1_breakpoint", "Gene2_breakpoint", "BCR-ABL1 Type", "Fusion Type", "Split reads1", "Split reads2", "Discordant Mates", "Coverage gene1", "Coverage gene2", "Confidence"]
 with open(snakemake.input.arriba_tsv, 'r') as tsv_arriba:
@@ -85,8 +80,6 @@ with open(snakemake.input.arriba_tsv, 'r') as tsv_arriba:
                     line[headerIndex.index("coverage1")], line[headerIndex.index("coverage2")],
                     line[headerIndex.index("confidence")]]
             fusion_lines.append(outline)
-
-
 
 
 ## Xlsx file
