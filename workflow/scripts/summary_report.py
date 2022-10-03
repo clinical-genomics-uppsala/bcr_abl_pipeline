@@ -55,10 +55,12 @@ for record in vcf.fetch():
 # Remove duplicated lines and add dp from mosdepth on non-call regions
 branfordSNV = []
 for line in branfordSNV_dup:
-    if line not in branfordSNV:
+    if line[0:5] not in [b_lines[0:5] for b_lines in branfordSNV]:
         if line[8] == "":
             line[8] = str(depth_dict[line[1]])
-        branfordSNV.append(line)
+            branfordSNV.append(line)
+        else:
+            branfordSNV.insert(0, line)
 
 
 fusion_lines = []
