@@ -5,8 +5,10 @@ __license__ = "GPL-3"
 
 
 include: "rules/common.smk"
+include: "rules/bcftools.smk"
+include: "rules/dotnet.smk"
 include: "rules/convert_pdf.smk"
-include: "rules/mutect2_pass_filter_bcrabl1.smk"
+# include: "rules/mutect2_pass_filter_bcrabl1.smk"
 include: "rules/summary_report.smk"
 
 
@@ -80,17 +82,9 @@ module snv_indels:
 use rule * from snv_indels as snv_indels_*
 
 
-use rule gatk_mutect2 from snv_indels as snv_indels_gatk_mutect2 with:
-    input:
-        map="alignment/samtools_extract_reads/{sample}_{type}_{chr}.bam",
-        bai="alignment/samtools_extract_reads/{sample}_{type}_{chr}.bam.bai",
-        fasta=config.get("reference", {}).get("fasta", ""),
-        bed="snv_indels/bed_split/design_bedfile_{chr}.bed",
-
-
 use rule fix_af from snv_indels as snv_indels_fix_af with:
     input:
-        vcf="snv_indels/gatk_mutect2/{sample}_{type}.bcrabl1.merged.vcf.gz",
+        vcf="snv_indels/dotnet_pisces/{sample}_{type}.merged.vcf.gz",
 
 
 module fusions:

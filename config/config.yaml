@@ -57,6 +57,11 @@ arriba_draw_fusion:
 convert_pdf:
   container: "docker://dpokidov/imagemagick:7.1.0-47-ubuntu"
 
+dotnet_pisces:
+  container: "/projects/wp2/nobackup/Twist_Myeloid/Containers/Pisces-5.2.11.simg"
+  bed_files:
+    branford: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/branford_bcr-abl1_positions.bed"
+
 fastp_pe:
    container: "docker://hydragenetics/fastp:0.20.1"
    extra: "-x "

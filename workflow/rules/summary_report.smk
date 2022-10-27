@@ -6,7 +6,7 @@ __license__ = "GPL-3"
 
 rule summary_report:
     input:
-        vcf="snv_indels/gatk_mutect2/{sample}_{type}.normalized.sorted.vcf.gz",
+        vcf="snv_indels/dotnet_pisces/{sample}_{type}.normalized.sorted.vcf.gz",
         branford=config["summary_report"]["branford"],
         bed=config["reference"]["design_bed"],
         mosdepth_regions="qc/mosdepth_bed/{sample}_{type}.regions.bed.gz",
