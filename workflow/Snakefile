@@ -84,7 +84,7 @@ use rule * from snv_indels as snv_indels_*
 
 use rule fix_af from snv_indels as snv_indels_fix_af with:
     input:
-        vcf="snv_indels/dotnet_pisces/{sample}_{type}.merged.vcf.gz",
+        vcf="snv_indels/pisces/{sample}_{type}.merged.vcf.gz",
 
 
 module fusions:
