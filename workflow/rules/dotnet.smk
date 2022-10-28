@@ -15,7 +15,7 @@ rule dotnet_pisces:
         pisces_log=temp("snv_indels/pisces/{sample}_{type}_{chr}_bad_name/PiscesLogs/PiscesLog.txt"),
         pisces_options=temp("snv_indels/pisces/{sample}_{type}_{chr}_bad_name/PiscesLogs/PiscesOptions.used.json"),
     params:
-        extra=config.get("dotnet_pisces", {}).get("extra", ""),
+        extra=config.get("dotnet_pisces", {}).get("extra", "--gvcf FALSE --filterduplicates TRUE"),
     log:
         "snv_indels/pisces/{sample}_{type}_{chr}.bad_name.vcf.log",
     benchmark:
