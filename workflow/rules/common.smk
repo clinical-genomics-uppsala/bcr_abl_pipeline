@@ -88,7 +88,7 @@ def compile_output_list(wildcards):
     )
     output_files.append(
         [
-            "snv_indels/gatk_mutect2/%s_%s.normalized.sorted.vcf.gz%s" % (sample, type, suffix)
+            "snv_indels/pisces/%s_%s.normalized.sorted.vcf.gz%s" % (sample, type, suffix)
             for sample in get_samples(samples)
             for type in get_unit_types(units, sample)
             for suffix in ["", ".tbi"]
