@@ -59,7 +59,7 @@ def compile_output_list(wildcards):
     output_files = ["qc/multiqc/multiqc_RNA.html"]
     output_files.append(
         [
-            "alignment/star/%s_%s.bam%s" % (sample, type, suffix)
+            "Results/%s_%s/%s_%s.bam%s" % (sample, type, sample, type, suffix)
             for sample in get_samples(samples)
             for type in get_unit_types(units, sample)
             for suffix in ["", ".bai"]
@@ -67,28 +67,15 @@ def compile_output_list(wildcards):
     )
     output_files.append(
         [
-            "fusions/arriba/%s_%s.fusions.tsv" % (sample, type)
+            "Results/%s_%s/%s_%s.arriba.%s" % (sample, type, sample, type, suffix)
             for sample in get_samples(samples)
             for type in get_unit_types(units, sample)
+            for suffix in ["fusions.tsv", "pdf"]
         ]
     )
     output_files.append(
         [
-            "fusions/arriba_draw_fusion/%s_%s.pdf" % (sample, type)
-            for sample in get_samples(samples)
-            for type in get_unit_types(units, sample)
-        ]
-    )
-    output_files.append(
-        [
-            "fusions/star_fusion/%s_%s/star-fusion.fusion_predictions.tsv" % (sample, type)
-            for sample in get_samples(samples)
-            for type in get_unit_types(units, sample)
-        ]
-    )
-    output_files.append(
-        [
-            "snv_indels/pisces/%s_%s.normalized.sorted.vcf.gz%s" % (sample, type, suffix)
+            "Results/%s_%s/%s_%s.normalized.sorted.vcf.gz%s" % (sample, type, sample, type, suffix)
             for sample in get_samples(samples)
             for type in get_unit_types(units, sample)
             for suffix in ["", ".tbi"]

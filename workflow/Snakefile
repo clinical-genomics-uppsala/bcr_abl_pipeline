@@ -5,12 +5,14 @@ __license__ = "GPL-3"
 
 
 include: "rules/common.smk"
+include: "rules/cp_results.smk"
 include: "rules/bcftools.smk"
 include: "rules/dotnet.smk"
 include: "rules/convert_pdf.smk"
-# include: "rules/mutect2_pass_filter_bcrabl1.smk"
 include: "rules/summary_report.smk"
 
+ruleorder: alignment_samtools_index > cp_bai
+ruleorder: snv_indels_tabix > cp_tbi
 
 report: "report/workflow.rst"
 
