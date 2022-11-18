@@ -4,6 +4,32 @@ __email__ = "arielle.munters@scilifelab.uu.se"
 __license__ = "GPL-3"
 
 
+rule cp_multiqc:
+    input:
+        "qc/multiqc/multiqc_RNA.html",
+    output:
+        "Results/MultiQC_R.html",
+    params:
+        extra=config.get("cp_multiqc", {}).get("extra", ""),
+    log:
+        "cp_results/MultiQC_R.html.log",
+    benchmark:
+        repeat("cp_results/MultiQC_R.html.benchmark.tsv", config.get("cp_multiqc", {}).get("benchmark_repeats", 1))
+    threads: config.get("cp_multiqc", {}).get("threads", config["default_resources"]["threads"])
+    resources:
+        mem_mb=config.get("cp_multiqc", {}).get("mem_mb", config["default_resources"]["mem_mb"]),
+        mem_per_cpu=config.get("cp_multiqc", {}).get("mem_per_cpu", config["default_resources"]["mem_per_cpu"]),
+        partition=config.get("cp_multiqc", {}).get("partition", config["default_resources"]["partition"]),
+        threads=config.get("cp_multiqc", {}).get("threads", config["default_resources"]["threads"]),
+        time=config.get("cp_multiqc", {}).get("time", config["default_resources"]["time"]),
+    container:
+        config.get("cp_multiqc", {}).get("container", config["default_container"])
+    conda:
+        "../envs/cp_results.yaml"
+    shell:
+        "(cp {input} {output}) &> {log}"
+
+
 rule cp_bam:
     input:
         "alignment/star/{sample}_R.bam",

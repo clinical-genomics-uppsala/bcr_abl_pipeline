@@ -56,7 +56,7 @@ wildcard_constraints:
 
 
 def compile_output_list(wildcards):
-    output_files = ["qc/multiqc/multiqc_RNA.html"]
+    output_files = ["Results/MultiQC_R.html"]
     output_files.append(
         [
             "Results/%s_%s/%s_%s.bam%s" % (sample, type, sample, type, suffix)
