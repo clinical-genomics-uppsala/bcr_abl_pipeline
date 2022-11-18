@@ -11,7 +11,7 @@ today = date.today()
 emptyList = ['', '', '', '', '', '']
 
 
-depth_dict={}
+depth_dict = {}
 with gzip.open(snakemake.input.mosdepth_regions, 'rt') as mosdepthfile:
     for lline in mosdepthfile:
         line = lline.strip().split("\t")
@@ -36,11 +36,12 @@ for record in vcf.fetch():
     else:
         filter = ", ".join(list(record.filter))
 
-    outline = [sample, record.contig, str(record.pos), record.ref, ";".join(record.alts), ';'.join(map(str, record.info["AF"])), str(record.info["DP"]), ";".join(map(str, record.samples[sample].get("AD"))), filter]
+    outline = [sample, record.contig, str(record.pos), record.ref, ";".join(record.alts), ';'.join(map(str, record.info["AF"])),
+               str(record.info["DP"]), ";".join(map(str, record.samples[sample].get("AD"))), filter]
     allSNVs.append(outline)
 
-    for b_line in branfordVariants: #chr, pos, ref, alt, mutation, name
-        if record.contig == b_line[0] and record.pos == int(b_line[2]) and  b_line[5] in record.alts:
+    for b_line in branfordVariants:  # chr, pos, ref, alt, mutation, name
+        if record.contig == b_line[0] and record.pos == int(b_line[2]) and b_line[5] in record.alts:
             dp = str(record.info["DP"])
             index = list(record.alts).index(b_line[5])
             af = str(round(record.info["AF"][index], 3))
@@ -52,37 +53,38 @@ for record in vcf.fetch():
 # Add branfordVariants that were not found and and depth from mosdepth
 for b_line in branfordVariants:
     ordered_b_line = [b_line[6], b_line[3], b_line[0], str(b_line[2]), b_line[4], b_line[5]]
-    if ordered_b_line not in  [outlines[0:6] for outlines in branfordSNV]:
+    if ordered_b_line not in [outlines[0:6] for outlines in branfordSNV]:
         branfordSNV.append(ordered_b_line + ["", "", str(depth_dict[ordered_b_line[1]])])
 
 # Add fusions from Arriba
 fusion_lines = []
-fusionHeading = ["Gene1", "Gene2", "Gene1_breakpoint", "Gene2_breakpoint", "BCR-ABL1 Type", "Fusion Type", "Split reads1", "Split reads2", "Discordant Mates", "Coverage gene1", "Coverage gene2", "Confidence"]
+fusionHeading = ["Gene1", "Gene2", "Gene1_breakpoint", "Gene2_breakpoint", "BCR-ABL1 Type", "Fusion Type", "Split reads1",
+                 "Split reads2", "Discordant Mates", "Coverage gene1", "Coverage gene2", "Confidence"]
 with open(snakemake.input.arriba_tsv, 'r') as tsv_arriba:
-    headerIndex=tsv_arriba.readline().strip().split("\t")
+    headerIndex = tsv_arriba.readline().strip().split("\t")
     for lline in tsv_arriba:
         line = lline.strip().split("\t")
         if line[headerIndex.index("confidence")] == "medium" or line[headerIndex.index("confidence")] == "high":
-            gene1_pos = line[headerIndex.index("breakpoint1")] # get exons how?
+            gene1_pos = line[headerIndex.index("breakpoint1")]  # get exons how?
             gene2_pos = line[headerIndex.index("breakpoint2")]
             fusion_type = ""
             if line[headerIndex.index("#gene1")] == "BCR" and line[headerIndex.index("gene2")] == "ABL1":
                 if int(gene1_pos.split(":")[1]) <= 23627388:
                     fusion_type = "Minor"
-                elif int(gene1_pos.split(":")[1]) >= 23629346 and int(gene1_pos.split(":")[1]) <= 23637342 :
+                elif int(gene1_pos.split(":")[1]) >= 23629346 and int(gene1_pos.split(":")[1]) <= 23637342:
                     fusion_type = "Major"
                 elif int(gene1_pos.split(":")[1]) >= 23651611:
                     fusion_type = " Micro"
 
             outline = [line[headerIndex.index("#gene1")], line[headerIndex.index("gene2")], gene1_pos, gene2_pos, fusion_type,
-                    line[headerIndex.index("type")], line[headerIndex.index("split_reads1")],
-                    line[headerIndex.index("split_reads2")], line[headerIndex.index("discordant_mates")],
-                    line[headerIndex.index("coverage1")], line[headerIndex.index("coverage2")],
-                    line[headerIndex.index("confidence")]]
+                       line[headerIndex.index("type")], line[headerIndex.index("split_reads1")],
+                       line[headerIndex.index("split_reads2")], line[headerIndex.index("discordant_mates")],
+                       line[headerIndex.index("coverage1")], line[headerIndex.index("coverage2")],
+                       line[headerIndex.index("confidence")]]
             fusion_lines.append(outline)
 
 
-## Xlsx file
+# Xlsx file
 workbook = xlsxwriter.Workbook(snakemake.output.xlsx)
 worksheetOver = workbook.add_worksheet("Overview")
 worksheetBran = workbook.add_worksheet("Branford variants")
@@ -114,8 +116,8 @@ worksheetOver.write_url(8, 0, "internal:'SNV variants'!A1", string="ABL1 variant
 worksheetOver.write_url(9, 0, "internal:'Fusions'!A1", string="Fusions")
 worksheetOver.write_row(11, 0, emptyList, lineFormat)
 
-worksheetOver.write(14, 0 , "Branford list used: "+str(snakemake.input.branford))
-worksheetOver.write(15, 0, "Bedfile used for variantcalling: "+str(snakemake.input.bed) )
+worksheetOver.write(14, 0, "Branford list used: "+str(snakemake.input.branford))
+worksheetOver.write(15, 0, "Bedfile used for variantcalling: "+str(snakemake.input.bed))
 
 
 ''' Branford list sheet '''

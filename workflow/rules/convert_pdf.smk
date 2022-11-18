@@ -16,7 +16,7 @@ rule convert_pdf:
     benchmark:
         repeat(
             "fusions/arriba_draw_fusion/{sample}_{type}_page1.jpg.benchmark.tsv",
-            config.get("convert_pdf", {}).get("benchmark_repeats", 1)
+            config.get("convert_pdf", {}).get("benchmark_repeats", 1),
         )
     threads: config.get("convert_pdf", {}).get("threads", config["default_resources"]["threads"])
     resources:

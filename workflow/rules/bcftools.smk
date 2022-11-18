@@ -17,7 +17,7 @@ rule bcftools_reheader:
     benchmark:
         repeat(
             "snv_indels/pisces/{sample}_{type}_{chr}.vcf.benchmark.tsv",
-            config.get("bcftools_reheader", {}).get("benchmark_repeats", 1)
+            config.get("bcftools_reheader", {}).get("benchmark_repeats", 1),
         )
     threads: config.get("bcftools_reheader", {}).get("threads", config["default_resources"]["threads"])
     resources:

@@ -21,7 +21,7 @@ rule dotnet_pisces:
     benchmark:
         repeat(
             "snv_indels/pisces/{sample}_{type}_{chr}.bad_name.vcf.benchmark.tsv",
-            config.get("dotnet_pisces", {}).get("benchmark_repeats", 1)
+            config.get("dotnet_pisces", {}).get("benchmark_repeats", 1),
         )
     threads: config.get("dotnet_pisces", {}).get("threads", config["default_resources"]["threads"])
     resources:
