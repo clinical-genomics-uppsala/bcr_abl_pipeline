@@ -6,15 +6,15 @@ __license__ = "GPL-3"
 
 rule cp_bam:
     input:
-        "alignment/star/{sample}_T.bam",
+        "alignment/star/{sample}_R.bam",
     output:
-        "Results/{sample}_T/{sample}_T.bam",
+        "Results/{sample}_R/{sample}_R.bam",
     params:
         extra=config.get("cp_bam", {}).get("extra", ""),
     log:
-        "cp_results/{sample}_T.bam.log",
+        "cp_results/{sample}_R.bam.log",
     benchmark:
-        repeat("cp_results/{sample}_T.bam.benchmark.tsv", config.get("cp_bam", {}).get("benchmark_repeats", 1))
+        repeat("cp_results/{sample}_R.bam.benchmark.tsv", config.get("cp_bam", {}).get("benchmark_repeats", 1))
     threads: config.get("cp_bam", {}).get("threads", config["default_resources"]["threads"])
     resources:
         mem_mb=config.get("cp_bam", {}).get("mem_mb", config["default_resources"]["mem_mb"]),
@@ -32,15 +32,15 @@ rule cp_bam:
 
 rule cp_bai:
     input:
-        "alignment/star/{sample}_T.bam.bai",
+        "alignment/star/{sample}_R.bam.bai",
     output:
-        "Results/{sample}_T/{sample}_T.bam.bai",
+        "Results/{sample}_R/{sample}_R.bam.bai",
     params:
         extra=config.get("cp_bai", {}).get("extra", ""),
     log:
-        "cp_results/{sample}_T.bam.bai.log",
+        "cp_results/{sample}_R.bam.bai.log",
     benchmark:
-        repeat( "cp_results/{sample}_T.bam.bai.benchmark.tsv", config.get("cp_bai", {}).get("benchmark_repeats", 1))
+        repeat("cp_results/{sample}_R.bam.bai.benchmark.tsv", config.get("cp_bai", {}).get("benchmark_repeats", 1))
     threads: config.get("cp_bai", {}).get("threads", config["default_resources"]["threads"])
     resources:
         mem_mb=config.get("cp_bai", {}).get("mem_mb", config["default_resources"]["mem_mb"]),
@@ -58,16 +58,16 @@ rule cp_bai:
 
 rule cp_vcf:
     input:
-        "snv_indels/pisces/{sample}_T.normalized.sorted.vcf.gz",
+        "snv_indels/pisces/{sample}_R.normalized.sorted.vcf.gz",
     output:
-        "Results/{sample}_T/{sample}_T.normalized.sorted.vcf.gz",
+        "Results/{sample}_R/{sample}_R.normalized.sorted.vcf.gz",
     params:
         extra=config.get("cp_vcf", {}).get("extra", ""),
     log:
-        "cp_results/{sample}_T.normalized.sorted.vcf.gz.log",
+        "cp_results/{sample}_R.normalized.sorted.vcf.gz.log",
     benchmark:
         repeat(
-            "cp_results/{sample}_T.normalized.sorted.vcf.gz.benchmark.tsv", config.get("cp_vcf", {}).get("benchmark_repeats", 1)
+            "cp_results/{sample}_R.normalized.sorted.vcf.gz.benchmark.tsv", config.get("cp_vcf", {}).get("benchmark_repeats", 1)
         )
     threads: config.get("cp_vcf", {}).get("threads", config["default_resources"]["threads"])
     resources:
@@ -86,17 +86,17 @@ rule cp_vcf:
 
 rule cp_tbi:
     input:
-        "snv_indels/pisces/{sample}_T.normalized.sorted.vcf.gz.tbi",
+        "snv_indels/pisces/{sample}_R.normalized.sorted.vcf.gz.tbi",
     output:
-        "Results/{sample}_T/{sample}_T.normalized.sorted.vcf.gz.tbi",
+        "Results/{sample}_R/{sample}_R.normalized.sorted.vcf.gz.tbi",
     params:
         extra=config.get("cp_tbi", {}).get("extra", ""),
     log:
-        "cp_results/{sample}_T.normalized.sorted.vcf.gz.tbi.log",
+        "cp_results/{sample}_R.normalized.sorted.vcf.gz.tbi.log",
     benchmark:
         repeat(
-            "cp_results/{sample}_T.normalized.sorted.vcf.gz.tbi.benchmark.tsv",
-            config.get("cp_tbi", {}).get("benchmark_repeats", 1)
+            "cp_results/{sample}_R.normalized.sorted.vcf.gz.tbi.benchmark.tsv",
+            config.get("cp_tbi", {}).get("benchmark_repeats", 1),
         )
     threads: config.get("cp_tbi", {}).get("threads", config["default_resources"]["threads"])
     resources:
@@ -115,17 +115,17 @@ rule cp_tbi:
 
 rule cp_arrbia_fusions:
     input:
-        "fusions/arriba/{sample}_T.fusions.tsv",
+        "fusions/arriba/{sample}_R.fusions.tsv",
     output:
-        "Results/{sample}_T/{sample}_T.arriba.fusions.tsv",
+        "Results/{sample}_R/{sample}_R.arriba.fusions.tsv",
     params:
         extra=config.get("cp_arrbia_fusions", {}).get("extra", ""),
     log:
-        "cp_results/{sample}_T.arriba.fusions.tsv.log",
+        "cp_results/{sample}_R.arriba.fusions.tsv.log",
     benchmark:
         repeat(
-            "cp_results/{sample}_T.arriba.fusions.tsv.benchmark.tsv",
-            config.get("cp_arrbia_fusions", {}).get("benchmark_repeats", 1)
+            "cp_results/{sample}_R.arriba.fusions.tsv.benchmark.tsv",
+            config.get("cp_arrbia_fusions", {}).get("benchmark_repeats", 1),
         )
     threads: config.get("cp_arrbia_fusions", {}).get("threads", config["default_resources"]["threads"])
     resources:
@@ -144,17 +144,17 @@ rule cp_arrbia_fusions:
 
 rule cp_arrbia_pdf:
     input:
-        "fusions/arriba_draw_fusion/{sample}_T.pdf",
+        "fusions/arriba_draw_fusion/{sample}_R.pdf",
     output:
-        "Results/{sample}_T/{sample}_T.arriba.pdf",
+        "Results/{sample}_R/{sample}_R.arriba.pdf",
     params:
         extra=config.get("cp_arrbia_pdf", {}).get("extra", ""),
     log:
-        "cp_results/{sample}_T.arriba.pdf.log",
+        "cp_results/{sample}_R.arriba.pdf.log",
     benchmark:
         repeat(
-            "cp_results/{sample}_T.arriba.pdf.benchmark.tsv",
-            config.get("cp_arrbia_pdf", {}).get("benchmark_repeats", 1)
+            "cp_results/{sample}_R.arriba.pdf.benchmark.tsv",
+            config.get("cp_arrbia_pdf", {}).get("benchmark_repeats", 1),
         )
     threads: config.get("cp_arrbia_pdf", {}).get("threads", config["default_resources"]["threads"])
     resources:
