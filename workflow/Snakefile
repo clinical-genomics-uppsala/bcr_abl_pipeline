@@ -11,8 +11,10 @@ include: "rules/dotnet.smk"
 include: "rules/convert_pdf.smk"
 include: "rules/summary_report.smk"
 
-ruleorder: alignment_samtools_index > cp_bai
-ruleorder: snv_indels_tabix > cp_tbi
+
+ruleorder: cp_bai > alignment_samtools_index
+ruleorder: cp_tbi > snv_indels_tabix
+
 
 report: "report/workflow.rst"
 

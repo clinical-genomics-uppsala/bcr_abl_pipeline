@@ -21,7 +21,7 @@ rule summary_report:
     benchmark:
         repeat(
             "summary_report/{sample}_{type}.output.benchmark.tsv",
-            config.get("summary_report", {}).get("benchmark_repeats", 1)
+            config.get("summary_report", {}).get("benchmark_repeats", 1),
         )
     threads: config.get("summary_report", {}).get("threads", config["default_resources"]["threads"])
     resources:
