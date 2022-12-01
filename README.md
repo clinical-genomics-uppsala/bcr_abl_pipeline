@@ -16,7 +16,7 @@
 This pipeline is to find variants in the BCR-ABL1 transcript. It also identifies which transcript as an extra qc step. It is based on [Hydra-Genetics](https://github.com/hydra-genetics) modules with local adaptiations. It process `.fastq`-files and procduces a summerized report in `.xlsx`-format, `.bam`, `.vcf.gz`, as well as arriba results. QC values for the batch can be found in the MultiQC report.
 
 The following [Hydra-genetics](https://github.com/hydra-genetics) modules are used:
-- [prealignemnt](https://github.com/hydra-genetics/prealignment)
+- [prealignment](https://github.com/hydra-genetics/prealignment)
 - [alignment](https://github.com/hydra-genetics/alignment)
 - [snv_indels](https://github.com/hydra-genetics/snv_indels)
 - [fusions](https://github.com/hydra-genetics/fusions)
