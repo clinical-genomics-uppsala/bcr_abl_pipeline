@@ -3,6 +3,14 @@ __copyright__ = "Copyright 2022, Arielle R Munters"
 __email__ = "arielle.munters@scilifelab.uu.se"
 __license__ = "GPL-3"
 
+localrules:
+    cp_multiqc,
+    cp_bam,
+    cp_bai,
+    cp_vcf,
+    cp_tbi,
+    cp_arrbia_fusions,
+    cp_arrbia_pdf
 
 rule cp_multiqc:
     input:
