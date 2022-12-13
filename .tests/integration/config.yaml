@@ -7,12 +7,6 @@ default_container: "docker://hydragenetics/common:0.1.8"
 reference:
   fasta: "references/ref.fasta"
   fai: "references/ref.fasta.fai"
-  # dict: "/data/ref_genomes/hg19/genome_fasta/hg19.with.mt.dict"
-  # amb: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta.amb"
-  # ann: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta.ann"
-  # bwt: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta.bwt"
-  # pac: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta.pac"
-  # sa: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta.sa"
   design_bed: "references/bedfile.bed"
   skip_chrs:
       - "chr1"
@@ -69,19 +63,6 @@ fastqc:
 fusioncatcher:
   container: "docker://hydragenetics/fusioncatcher:1.33"
   genome_path: "references/"
-
-gatk_mutect2:
-  container: "docker://hydragenetics/gatk4:4.1.9.0"
-  extra: "--max-reads-per-alignment-start 0 --recover-all-dangling-branches true"
-  bed_files:
-    branford: "references/bedfile.bed"
-
-gatk_mutect2_filter:
-  container: "docker://hydragenetics/gatk4:4.1.9.0"
-  extra: "--max-alt-allele-count 3 --max-events-in-region 20"
-
-gatk_mutect2_merge_stats:
-  container: "docker://hydragenetics/gatk4:4.1.9.0"
 
 mosdepth_bed:
   container: "docker://hydragenetics/mosdepth:0.3.2"
