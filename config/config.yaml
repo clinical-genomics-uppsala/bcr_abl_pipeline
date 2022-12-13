@@ -9,12 +9,6 @@ default_container: "docker://hydragenetics/common:0.1.8"
 reference:
   fasta: "/data/ref_genomes/hg19/genome_fasta/hg19.with.mt.fasta"
   fai: "/data/ref_genomes/hg19/genome_fasta/hg19.with.mt.fasta.fai"
-  dict: "/data/ref_genomes/hg19/genome_fasta/hg19.with.mt.dict"
-  amb: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta.amb"
-  ann: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta.ann"
-  bwt: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta.bwt"
-  pac: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta.pac"
-  sa: "/data/ref_genomes/hg19/bwa/BWA_0.7.10_refseq/hg19.with.mt.fasta.sa"
   design_bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/bcr_abl1.bed"
   skip_chrs:
       - "chr1"
@@ -81,6 +75,7 @@ multiqc:
   container: "docker://hydragenetics/multiqc:1.11"
   reports:
     RNA:
+      extra: "--replace-names {input.sample_replacement} --sample-names {input.sample_order}"
       included_unit_types: ['R']
       qc_files:
         - "qc/fastqc/{sample}_{type}_{flowcell}_{lane}_{barcode}_{read}_fastqc.zip"
@@ -101,6 +96,9 @@ rseqc_gene_body_coverage:
 rseqc_inner_distance:
   bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/bcr_abl1_rseqc.bed"
   container: "docker://hydragenetics/rseqc:4.0.0"
+
+sample_order_for_multiqc:
+  sample_sheet: "SampleSheet.csv"
 
 star:
   container: "docker://hydragenetics/star:2.7.10a"
