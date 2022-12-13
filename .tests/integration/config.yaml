@@ -91,6 +91,7 @@ multiqc:
   container: "docker://hydragenetics/multiqc:1.11"
   reports:
     RNA:
+      extra: "--replace-names {input.sample_replacement} --sample-names {input.sample_order}"
       included_unit_types: ['R']
       qc_files:
         - "qc/fastqc/{sample}_{type}_{flowcell}_{lane}_{barcode}_{read}_fastqc.zip"
@@ -102,8 +103,6 @@ multiqc:
         - "qc/mosdepth_bed/{sample}_{type}.regions.bed.gz"
         - "qc/mosdepth_bed/{sample}_{type}.regions.bed.gz.csi"
 
-
-
 rseqc_gene_body_coverage:
   bed: "references/bedfile.bed"
   container: "docker://hydragenetics/rseqc:4.0.0"
@@ -111,6 +110,9 @@ rseqc_gene_body_coverage:
 rseqc_inner_distance:
   bed: "references/bedfile.bed"
   container: "docker://hydragenetics/rseqc:4.0.0"
+
+sample_order_for_multiqc:
+  sample_sheet: "SampleSheet.csv"
 
 star:
   container: "docker://hydragenetics/star:2.7.10a"
