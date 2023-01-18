@@ -75,7 +75,7 @@ multiqc:
   container: "docker://hydragenetics/multiqc:1.11"
   reports:
     RNA:
-      extra: "--replace-names {input.sample_replacement} --sample-names {input.sample_order}"
+      config: "multiqc_config_rna.yaml"
       included_unit_types: ['R']
       qc_files:
         - "qc/fastqc/{sample}_{type}_{flowcell}_{lane}_{barcode}_{read}_fastqc.zip"
@@ -88,6 +88,8 @@ multiqc:
         - "qc/mosdepth_bed/{sample}_{type}.regions.bed.gz.csi"
         - "qc/rseqc_gene_body_coverage/{sample}_{type}.geneBodyCoverage.txt"
         - "qc/rseqc_inner_distance/{sample}_{type}.inner_distance_freq.txt"
+
+# rseqc_bam_stats:
 
 rseqc_gene_body_coverage:
   bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/bcr_abl1_rseqc.bed"
@@ -110,7 +112,7 @@ star_fusion:
   genome_path: "/data/ref_data/star-fusion/GRCh37_gencode_v19_CTAT_lib_Mar012021.plug-n-play/ctat_genome_lib_build_dir/"
 
 summary_report:
-  container: "/projects/wp2/nobackup/Twist_Myeloid/Containers/python3.6-pysam-xlsxwriter-yaml.simg"
+  container: "/projects/wp2/nobackup/Twist_Myeloid/Containers/python3.9-0.1.0.sif"
   branford: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/branford_SNVs_220915.bed"
 
 trimmer_software: "fastp_pe"

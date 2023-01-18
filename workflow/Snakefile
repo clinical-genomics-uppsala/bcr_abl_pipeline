@@ -140,8 +140,16 @@ use rule multiqc from qc as qc_multiqc with:
                 for ext in config.get("picard_collect_multiple_metrics", {}).get("output_ext", [""])
             ]
         ),
+        config=lambda wildcards: config["multiqc"]["reports"][wildcards.report]["config"],
         sample_order="qc/multiqc/sample_order.tsv",
         sample_replacement="qc/multiqc/sample_replacement.tsv",
+    params:
+        extra=lambda wildcards, input: "--replace-names "
+        + input.sample_replacement
+        + " --sample-names "
+        + input.sample_order
+        + " -c "
+        + input.config,
 
 
 module misc:
