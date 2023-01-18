@@ -1,3 +1,4 @@
+#!/bin/python3
 from pysam import VariantFile
 import xlsxwriter
 from datetime import date
