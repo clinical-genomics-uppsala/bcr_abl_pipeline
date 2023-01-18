@@ -1,0 +1,67 @@
+decimalPoint_format: ','
+extra_fn_clean_exts: ##from this until end
+    - '.dup'
+    - '_R'
+    - type: regex
+      pattern: '_fastq[12]'
+# extra_fn_clean_trim:
+#   - 'Sample_VE-3297_'
+
+custom_content:
+  order:
+    - fastqc
+    - fastp
+    - mosdepth
+
+
+table_columns_visible:
+  FastQC:
+    percent_duplicates: False
+    percent_gc: False
+    avg_sequence_length: False
+    percent_fails: False
+    total_sequences: False
+  fastp:
+    pct_adapter: True
+    pct_surviving: False
+    after_filtering_gc_content: False
+    filtering_result_passed_filter_reads: False
+    after_filtering_q30_bases: False
+    after_filtering_q30_rate: False
+    pct_duplication: False
+  mosdepth:
+    median_coverage: True
+    mean_coverage: False
+    1_x_pc: False
+    5_x_pc: False
+    10_x_pc: False
+    20_x_pc: False
+    30_x_pc: False
+    50_x_pc: False
+  # rseqc:
+  #   proper_pairs_percent: True
+  STAR:
+    uniquely_mapped_percent: True
+    uniquely_mapped: False
+
+# Patriks plug in, addera egna columner till general stats
+# multiqc_cgs:
+#   mosdepth:
+#      20_x_pc: #Cant get it to work why?
+#         title: "20x percent"
+#         description: "Fraction of genome with at least 20X coverage"
+#         max: 100
+#         min: 0
+#         suffix: "%"
+#         scale: "RdYlGn"
+
+# Galler alla kolumner oberoende pa module!
+table_columns_placement:
+  mosdepth:
+    median_coverage: 601
+    # 1_x_pc: 601
+    # 5_x_pc: 602
+    10_x_pc: 602
+    20_x_pc: 603
+    30_x_pc: 604
+    # 50_x_pc: 605

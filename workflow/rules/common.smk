@@ -59,26 +59,18 @@ def compile_output_list(wildcards):
     output_files = ["Results/MultiQC_R.html"]
     output_files.append(
         [
-            "Results/%s_%s/%s_%s.bam%s" % (sample, type, sample, type, suffix)
+            "Results/%s_%s/%s_%s.%s" % (sample, type, sample, type, suffix)
             for sample in get_samples(samples)
             for type in get_unit_types(units, sample)
-            for suffix in ["", ".bai"]
-        ]
-    )
-    output_files.append(
-        [
-            "Results/%s_%s/%s_%s.arriba.%s" % (sample, type, sample, type, suffix)
-            for sample in get_samples(samples)
-            for type in get_unit_types(units, sample)
-            for suffix in ["fusions.tsv", "pdf"]
-        ]
-    )
-    output_files.append(
-        [
-            "Results/%s_%s/%s_%s.normalized.sorted.vcf.gz%s" % (sample, type, sample, type, suffix)
-            for sample in get_samples(samples)
-            for type in get_unit_types(units, sample)
-            for suffix in ["", ".tbi"]
+            for suffix in [
+                "bam",
+                "bam.bai",
+                "arriba.fusions.tsv",
+                "arriba.pdf",
+                "normalized.sorted.vcf.gz",
+                "normalized.sorted.vcf.gz.tbi",
+                "config.yaml",
+            ]
         ]
     )
     output_files.append(
