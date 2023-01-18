@@ -72,7 +72,7 @@ multiqc:
   container: "docker://hydragenetics/multiqc:1.11"
   reports:
     RNA:
-      config: "../../config/mutliqc_config_rna.yaml"
+      config: "../../config/multiqc_config_rna.yaml"
       extra: "--replace-names {input.sample_replacement} --sample-names {input.sample_order}"
       included_unit_types: ['R']
       qc_files:
