@@ -69,7 +69,7 @@ fusioncatcher:
 
 mosdepth_bed:
   container: "docker://hydragenetics/mosdepth:0.3.2"
-  design_bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/branford_SNVs_220915.bed"
+  design_bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/branford_SNVs_230118.bed"
 
 multiqc:
   container: "docker://hydragenetics/multiqc:1.11"
@@ -113,7 +113,7 @@ star_fusion:
 
 summary_report:
   container: "/projects/wp2/nobackup/Twist_Myeloid/Containers/python3.9-0.1.0.sif"
-  branford: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/branford_SNVs_220915.bed"
+  branford: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/branford_SNVs_230118.bed"
 
 trimmer_software: "fastp_pe"
 
