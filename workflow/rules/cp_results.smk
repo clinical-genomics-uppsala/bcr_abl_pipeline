@@ -12,6 +12,7 @@ localrules:
     cp_tbi,
     cp_arrbia_fusions,
     cp_arrbia_pdf,
+    cp_config,
 
 
 rule cp_multiqc:
@@ -201,6 +202,35 @@ rule cp_arrbia_pdf:
         time=config.get("cp_arrbia_pdf", {}).get("time", config["default_resources"]["time"]),
     container:
         config.get("cp_arrbia_pdf", {}).get("container", config["default_container"])
+    conda:
+        "../envs/cp_results.yaml"
+    shell:
+        "(cp {input} {output}) &> {log}"
+
+
+rule cp_config:
+    input:
+        "config.yaml",
+    output:
+        "Results/{sample}_R/{sample}_R.config.yaml",
+    params:
+        extra=config.get("cp_arrbia_pdf", {}).get("extra", ""),
+    log:
+        "cp_results/{sample}_R.config.yaml.log",
+    benchmark:
+        repeat(
+            "cp_results/{sample}_R.config.yaml.benchmark.tsv",
+            config.get("cp_arrbia_pdf", {}).get("benchmark_repeats", 1),
+        )
+    threads: config.get("cp_config", {}).get("threads", config["default_resources"]["threads"])
+    resources:
+        mem_mb=config.get("cp_configf", {}).get("mem_mb", config["default_resources"]["mem_mb"]),
+        mem_per_cpu=config.get("cp_config", {}).get("mem_per_cpu", config["default_resources"]["mem_per_cpu"]),
+        partition=config.get("cp_config", {}).get("partition", config["default_resources"]["partition"]),
+        threads=config.get("cp_config", {}).get("threads", config["default_resources"]["threads"]),
+        time=config.get("cp_config", {}).get("time", config["default_resources"]["time"]),
+    container:
+        config.get("cp_config", {}).get("container", config["default_container"])
     conda:
         "../envs/cp_results.yaml"
     shell:
