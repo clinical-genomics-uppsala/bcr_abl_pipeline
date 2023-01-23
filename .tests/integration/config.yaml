@@ -66,23 +66,6 @@ fastp_pe:
 fastqc:
   container: "docker://hydragenetics/fastqc:0.11.9"
 
-fusioncatcher:
-  container: "docker://hydragenetics/fusioncatcher:1.33"
-  genome_path: "references/"
-
-gatk_mutect2:
-  container: "docker://hydragenetics/gatk4:4.1.9.0"
-  extra: "--max-reads-per-alignment-start 0 --recover-all-dangling-branches true"
-  bed_files:
-    branford: "references/bedfile.bed"
-
-gatk_mutect2_filter:
-  container: "docker://hydragenetics/gatk4:4.1.9.0"
-  extra: "--max-alt-allele-count 3 --max-events-in-region 20"
-
-gatk_mutect2_merge_stats:
-  container: "docker://hydragenetics/gatk4:4.1.9.0"
-
 mosdepth_bed:
   container: "docker://hydragenetics/mosdepth:0.3.2"
   design_bed: "references/bedfile.bed"
@@ -101,8 +84,8 @@ multiqc:
         - "qc/mosdepth_bed/{sample}_{type}.mosdepth.summary.txt"
         - "qc/mosdepth_bed/{sample}_{type}.regions.bed.gz"
         - "qc/mosdepth_bed/{sample}_{type}.regions.bed.gz.csi"
-
-
+        - "qc/rseqc_gene_body_coverage/{sample}_{type}.geneBodyCoverage.txt"
+        - "qc/rseqc_inner_distance/{sample}_{type}.inner_distance_freq.txt"
 
 rseqc_gene_body_coverage:
   bed: "references/bedfile.bed"
