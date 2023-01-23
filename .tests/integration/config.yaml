@@ -84,6 +84,8 @@ multiqc:
         - "qc/mosdepth_bed/{sample}_{type}.mosdepth.summary.txt"
         - "qc/mosdepth_bed/{sample}_{type}.regions.bed.gz"
         - "qc/mosdepth_bed/{sample}_{type}.regions.bed.gz.csi"
+        - "qc/rseqc_gene_body_coverage/{sample}_{type}.geneBodyCoverage.txt"
+        - "qc/rseqc_inner_distance/{sample}_{type}.inner_distance_freq.txt"
 
 rseqc_gene_body_coverage:
   bed: "references/bedfile.bed"

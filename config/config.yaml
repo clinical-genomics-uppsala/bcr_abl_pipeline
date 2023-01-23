@@ -63,10 +63,6 @@ fastp_pe:
 fastqc:
   container: "docker://hydragenetics/fastqc:0.11.9"
 
-fusioncatcher:
-  container: "docker://hydragenetics/fusioncatcher:1.33"
-  genome_path: "/data/ref_data/fusioncatcher/human_v102/human_v102/"
-
 mosdepth_bed:
   container: "docker://hydragenetics/mosdepth:0.3.2"
   design_bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/branford_SNVs_230118.bed"
