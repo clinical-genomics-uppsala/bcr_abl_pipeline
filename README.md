@@ -13,7 +13,7 @@
 
 ## :speech_balloon: Introduction
 [comment]: <> (Something about nextera?)
-This pipeline is to find variants in the BCR-ABL1 transcript. It also identifies which transcript as an extra qc step. It is based on [Hydra-Genetics](https://github.com/hydra-genetics) modules with local adaptiations. It process `.fastq`-files and procduces a summerized report in `.xlsx`-format, `.bam`, `.vcf.gz`, as well as arriba results. QC values for the batch can be found in the MultiQC report.
+This pipeline is to find variants in the BCR-ABL1 transcript. It also identifies which fusions are detected in the data with [Arriba](https://github.com/suhrig/arriba) as an extra qc step. It is based on [Hydra-Genetics](https://github.com/hydra-genetics) modules with local adaptiations. It process `.fastq`-files and procduces a summerized report in `.xlsx`-format, a `.bam`-file, a `.vcf.gz`-file, as well as Arriba results for each sample. QC values for the batch can be found in the MultiQC report. For variant calling [Illumina Pisces](https://github.com/Illumina/Pisces) v5.2.11 is used.
 
 The following [Hydra-genetics](https://github.com/hydra-genetics) modules are used:
 - [prealignment](https://github.com/hydra-genetics/prealignment)
@@ -45,12 +45,13 @@ The following information need to be added to these files:
 | --- | --- |
 | **`samples.tsv`** |
 | sample | unique sample/patient id, one per row |
+| tumor_conten | tumor content in sample, float |
 | **`units.tsv`** |
 | sample | same sample/patient id as in `samples.tsv` |
 | type | data type identifier (one letter), **R**NA |
 | platform | type of sequencing platform, e.g. `MiSeq` |
 | machine | specific machine id, e.g. NovaSeq instruments have `@M0xxxx` |
-| flowcell | identifer of flowcell used |
+| flowcell | identifer of flowcell used (MiSeq flowcells with 000000 fails, remove the zeros)|
 | lane | flowcell lane number |
 | barcode | sequence library barcode/index, connect forward and reverse indices by `+`, e.g. `ATGC+ATGC` |
 | fastq1/2 | absolute path to forward and reverse reads |
@@ -67,10 +68,11 @@ Reference files should be specified in [`config.yaml`](https://github.com/clinic
     -  `.gff3` protein domains
     -  known fusions list
     -  Cytobands
-  -rseq bedfile
+ - rseq bedfile
+ - `SampleSheet.csv` for sorting samples in MultiQC report
 
 ### Containers
-All containers but one is available [online](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/blob/develop/config/config.yaml). For the `.xlsx`-report a python3 enviorment with the `pysam`, `xlsxwriter` and `gzip` packages are needed. 
+All containers but two are available [online](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/blob/develop/config/config.yaml). For the `.xlsx`-report a python3 enviorment with the `pysam`, `xlsxwriter` and `gzip` packages are needed. For variantcalling a container with [Illumina Pisces](https://github.com/Illumina/Pisces) v5.2.11 is needed.
 
 ## :white_check_mark: Testing
 
@@ -78,7 +80,7 @@ The workflow repository contains a small test dataset `.tests/integration` which
 
 ```bash
 $ cd .tests/integration
-$ snakemake -s ../../Snakefile -j1 --use-singularity
+$ snakemake -n -s ../../workflow/Snakefile -j1 --use-singularity --configfile config.yaml
 ```
 
 ## :rocket: Usage
@@ -93,8 +95,8 @@ The following output files should be targeted via another rule:
 |---|---|
 | `Results/MultiQC_R.html` | Summerized QC values in [MultiQC](https://multiqc.info/) report |
 | `Results/${sample}_R_summary.xlsx` | Xlsx report with Branford list, coverage and arriba results summerized |
-| `Results/${sample}_R/${sample}_R.bam` | Alignment file from [STAR aligner](https://github.com/alexdobin/STAR) |
-| `Results/${sample}_R/${sample}_R.normalized.sorted.vcf.gz` | Variant file produced by [Illumina Pisces](https://github.com/Illumina/Pisces) variant caller |
+| `Results/${sample}_R/${sample}_R.bam(.bai)` | Alignment file from [STAR aligner](https://github.com/alexdobin/STAR) with index |
+| `Results/${sample}_R/${sample}_R.normalized.sorted.vcf.gz(.tbi)` | Variant file produced by [Illumina Pisces](https://github.com/Illumina/Pisces) variant caller with index|
 | `Results/${sample}_R/${sample}_R.arriba.fusions.tsv` | Fusions reported from the [Arriba](https://github.com/suhrig/arriba) fusion caller |
 | `Results/${sample}_R/${sample}_R.arriba.pdf` | PDF illustrations of fusions reported from the Arriba |
 
