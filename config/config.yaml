@@ -7,6 +7,7 @@ units: "units.tsv"
 default_container: "docker://hydragenetics/common:0.1.8"
 
 reference:
+  genome_dir: "/beegfs-storage/data/ref_genomes/GRCh38/reference_grasnatter/homo_sapiens_star/" # req by align not used
   fasta: "/data/ref_genomes/hg19/genome_fasta/hg19.with.mt.fasta"
   fai: "/data/ref_genomes/hg19/genome_fasta/hg19.with.mt.fasta.fai"
   design_bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/bcr_abl1.bed"
@@ -63,6 +64,10 @@ fastp_pe:
 fastqc:
   container: "docker://hydragenetics/fastqc:0.11.9"
 
+fusioncatcher: # not used but req
+  container: "docker://blcdsdockerregistry/fusioncatcher:1.33"
+  genome_path: "/beegfs-storage/data/ref_data/fusioncatcher/human_v102/human_v102"
+
 mosdepth_bed:
   container: "docker://hydragenetics/mosdepth:0.3.2"
   design_bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/branford_SNVs_230118.bed"
@@ -82,6 +87,7 @@ multiqc:
         - "qc/mosdepth_bed/{sample}_{type}.mosdepth.summary.txt"
         - "qc/mosdepth_bed/{sample}_{type}.regions.bed.gz"
         - "qc/mosdepth_bed/{sample}_{type}.regions.bed.gz.csi"
+        - "qc/samtools_stats/{sample}_{type}.samtools-stats.txt"
         - "qc/rseqc_gene_body_coverage/{sample}_{type}.geneBodyCoverage.txt"
         - "qc/rseqc_inner_distance/{sample}_{type}.inner_distance_freq.txt"
 

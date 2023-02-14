@@ -149,7 +149,19 @@ use rule multiqc from qc as qc_multiqc with:
         + " --sample-names "
         + input.sample_order
         + " -c "
-        + input.config,
+        + input.config
+        + " --cl-config \"extra_fn_clean_exts: {"
+        + ",".join([
+            "_%s_%s_%s" % (u.flowcell, u.lane, u.barcode)
+            for sample in get_samples(samples)
+            for u in units.loc[sample].dropna().itertuples()
+        ]+['.dup','_R'])
+        +"}\"",
+
+
+use rule samtools_stats from qc as qc_samtools_stats with:
+    input:
+        bam="alignment/star/{sample}_{type}.bam",
 
 
 module misc:
