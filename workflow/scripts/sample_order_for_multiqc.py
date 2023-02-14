@@ -16,7 +16,7 @@ with open(snakemake.input.sample_sheet, 'r') as samplesheet:
 
 
 if len(samples) == 0:
-  raise Exception("No samples found, have the header in SampleSheet changed?")
+    raise Exception("No samples found, have the header in SampleSheet changed?")
 
 
 with open(snakemake.output.replacement, "w+") as tsv:
