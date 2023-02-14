@@ -67,3 +67,28 @@ table_columns_placement:
     20_x_pc: 603
     30_x_pc: 604
     # 50_x_pc: 605
+  FastQC:
+    percent_duplicates: 500
+    percent_gc: 500
+    avg_sequence_length: 500
+    percent_fails: 500
+    total_sequences: 501
+  fastp:
+    pct_adapter: 900
+    pct_surviving: 900
+    after_filtering_gc_content: 900
+    filtering_result_passed_filter_reads: 900
+    after_filtering_q30_bases: 900
+    after_filtering_q30_rate: 900
+    pct_duplication: 900
+  Samtools:
+    error_rate: 799
+    non-primary_alignments: 750
+    reads_mapped: 798
+    reads_mapped_percent: 750
+    reads_properly_paired_percent: 750
+    reads_MQ0_percent: 750
+    raw_total_sequences: 701
+  STAR:
+    uniquely_mapped_percent: 801
+    uniquely_mapped: 800
