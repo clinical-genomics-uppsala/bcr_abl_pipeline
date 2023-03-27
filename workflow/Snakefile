@@ -3,35 +3,182 @@ __copyright__ = "Copyright 2022, Arielle R. Munters"
 __email__ = "arielle.munters@scilifelab.uu.se"
 __license__ = "GPL-3"
 
+
 include: "rules/common.smk"
+include: "rules/convert_pdf.smk"
+include: "rules/cp_results.smk"
+include: "rules/bcftools.smk"
+include: "rules/dotnet.smk"
+include: "rules/sample_order_for_multiqc.smk"
+include: "rules/summary_report.smk"
+
+
+ruleorder: cp_bai > alignment_samtools_index
+ruleorder: cp_tbi > snv_indels_tabix
+
 
 report: "report/workflow.rst"
 
-rule dummy:
-    output:
-        "bcr_abl_pipeline/dummy/{sample}_{type}.dummy.txt"
-    params:
-        extra=config.get("dummy", {}).get("extra", ""),
-    log:
-        "bcr_abl_pipeline/dummy/{sample}_{type}.output.log"
-    benchmark:
-       repeat("module/dummy/{sample}_{type}.output.benchmark.tsv", config.get("dummy", {}).get("benchmark_repeats", 1),)
-    threads: # optional
-       threads=config.get("dummy", {}).get("threads", config["default_resources"]["threads"]),
-    resources:
-        threads=config.get("dummy", {}).get("threads", config["default_resources"]["threads"]),
-        time=config.get("dummy", {}).get("time", config["default_resources"]["time"]),
-    container:
-       config.get("dummy", {}).get("container", config["default_container"])
-    conda:
-       "../envs/dummy.yaml"
-    message:
-       "{rule}: Do stuff on module/{rule}/{wildcards.sample}_{wildcards.type}.input"
-    shell:
-        """
-        touch {output}
-        """
 
 rule all:
     input:
         unpack(compile_output_list),
+
+
+# modules
+module prealignment:
+    snakefile:
+        github(
+            "hydra-genetics/prealignment",
+            path="workflow/Snakefile",
+            tag="1f55599",
+        )
+    config:
+        config
+
+
+use rule * from prealignment as prealignment_*
+
+
+module alignment:
+    snakefile:
+        github(
+            "hydra-genetics/alignment",
+            path="workflow/Snakefile",
+            tag="972bef3",
+        )
+    config:
+        config
+
+
+use rule * from alignment as alignment_*
+
+
+use rule star from alignment as alignment_star with:
+    output:
+        bam="alignment/star/{sample}_{type}.bam",
+        sj="alignment/star/{sample}_{type}.SJ.out.tab",
+        log_final="alignment/star/{sample}_{type}.Log.final.out",
+    params:
+        extra=lambda wildcards: "%s %s"
+        % (
+            config.get("star", {}).get("extra", ""),
+            config.get("star", {}).get("read_group", generate_read_group_star(wildcards)),
+        ),
+
+
+use rule samtools_extract_reads from alignment as alignment_samtools_extract_reads with:
+    input:
+        "alignment/star/{sample}_{type}.bam",
+        "alignment/star/{sample}_{type}.bam.bai",
+
+
+module snv_indels:
+    snakefile:
+        github(
+            "hydra-genetics/snv_indels",
+            path="workflow/Snakefile",
+            tag="a871325",
+        )
+    config:
+        config
+
+
+use rule * from snv_indels as snv_indels_*
+
+
+use rule fix_af from snv_indels as snv_indels_fix_af with:
+    input:
+        vcf="snv_indels/pisces/{sample}_{type}.merged.vcf.gz",
+
+
+module fusions:
+    snakefile:
+        github(
+            "hydra-genetics/fusions",
+            path="workflow/Snakefile",
+            tag="35ed724",
+        )
+    config:
+        config
+
+
+use rule * from fusions as fusions_*
+
+
+module qc:
+    snakefile:
+        github(
+            "hydra-genetics/qc",
+            path="workflow/Snakefile",
+            tag="2c37a18",
+        )
+    config:
+        config
+
+
+use rule * from qc as qc_*
+
+
+use rule mosdepth_bed from qc as qc_mosdepth_bed with:
+    input:
+        bam="alignment/star/{sample}_{type}.bam",
+        bai="alignment/star/{sample}_{type}.bam.bai",
+        bed=config.get("mosdepth_bed", {}).get("design_bed", ""),
+
+
+use rule multiqc from qc as qc_multiqc with:
+    input:
+        files=lambda wildcards: set(
+            [
+                file.format(sample=sample, type=u.type, lane=u.lane, flowcell=u.flowcell, barcode=u.barcode, read=read, ext=ext)
+                for file in config["multiqc"]["reports"][wildcards.report]["qc_files"]
+                for sample in get_samples(samples)
+                for u in units.loc[sample].dropna().itertuples()
+                if u.type in config["multiqc"]["reports"][wildcards.report]["included_unit_types"]
+                for read in ["fastq1", "fastq2"]
+                for ext in config.get("picard_collect_multiple_metrics", {}).get("output_ext", [""])
+            ]
+        ),
+        config=lambda wildcards: config["multiqc"]["reports"][wildcards.report]["config"],
+        sample_order="qc/multiqc/sample_order.tsv",
+        sample_replacement="qc/multiqc/sample_replacement.tsv",
+    params:
+        extra=lambda wildcards, input: "--replace-names "
+        + input.sample_replacement
+        + " --sample-names "
+        + input.sample_order
+        + " -c "
+        + input.config
+        + ' --cl-config "extra_fn_clean_exts: {'
+        + ",".join(
+            [
+                "_%s_%s_%s" % (u.flowcell, u.lane, u.barcode)
+                for sample in get_samples(samples)
+                for u in units.loc[sample].dropna().itertuples()
+            ]
+            + [".dup", "_R"]
+        )
+        + '}"',
+
+
+use rule samtools_stats from qc as qc_samtools_stats with:
+    input:
+        bam="alignment/star/{sample}_{type}.bam",
+
+
+module misc:
+    snakefile:
+        github(
+            "hydra-genetics/misc",
+            path="workflow/Snakefile",
+            tag="0d87e32",
+        )
+    config:
+        config
+
+
+use rule bedtools_intersect from misc as misc_bedtools_intersect with:
+    input:
+        left="{module}/{caller}/{file}.vcf.gz",
+        right=lambda wildcards: config.get(wildcards.caller, {}).get("bed_files", {}).get(wildcards.bed, ""),

@@ -1,0 +1,94 @@
+decimalPoint_format: ','
+
+custom_content:
+  order:
+    - fastqc
+    - fastp
+    - mosdepth
+    - STAR
+    - rseqc
+    - samtools
+
+
+table_columns_visible:
+  FastQC:
+    percent_duplicates: False
+    percent_gc: False
+    avg_sequence_length: False
+    percent_fails: False
+    total_sequences: False
+  fastp:
+    pct_adapter: True
+    pct_surviving: False
+    after_filtering_gc_content: False
+    filtering_result_passed_filter_reads: False
+    after_filtering_q30_bases: False
+    after_filtering_q30_rate: False
+    pct_duplication: False
+  mosdepth:
+    median_coverage: True
+    mean_coverage: False
+    1_x_pc: False
+    5_x_pc: False
+    10_x_pc: False
+    20_x_pc: False
+    30_x_pc: False
+    50_x_pc: False
+  Samtools:
+    error_rate: False
+    non-primary_alignments: False
+    reads_mapped: False
+    reads_mapped_percent: False
+    reads_properly_paired_percent: False
+    reads_MQ0_percent: False
+    raw_total_sequences: True
+  STAR:
+    uniquely_mapped_percent: True
+    uniquely_mapped: False
+
+# Patriks plug in, addera egna columner till general stats
+# multiqc_cgs:
+#   mosdepth:
+#      20_x_pc: #Cant get it to work why?
+#         title: "20x percent"
+#         description: "Fraction of genome with at least 20X coverage"
+#         max: 100
+#         min: 0
+#         suffix: "%"
+#         scale: "RdYlGn"
+
+# Galler alla kolumner oberoende pa module!
+table_columns_placement:
+  mosdepth:
+    median_coverage: 601
+    # 1_x_pc: 601
+    # 5_x_pc: 602
+    10_x_pc: 602
+    20_x_pc: 603
+    30_x_pc: 604
+    # 50_x_pc: 605
+  FastQC:
+    percent_duplicates: 500
+    percent_gc: 500
+    avg_sequence_length: 500
+    percent_fails: 500
+    total_sequences: 501
+  fastp:
+    pct_adapter: 900
+    pct_surviving: 900
+    after_filtering_gc_content: 900
+    filtering_result_passed_filter_reads: 900
+    after_filtering_q30_bases: 900
+    after_filtering_q30_rate: 900
+    pct_duplication: 900
+  Samtools:
+    error_rate: 799
+    non-primary_alignments: 750
+    reads_mapped: 798
+    reads_mapped_percent: 750
+    reads_properly_paired_percent: 750
+    reads_MQ0_percent: 750
+    raw_total_sequences: 701
+  STAR:
+    uniquely_mapped_percent: 801
+    uniquely_mapped: 800
