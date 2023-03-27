@@ -49,7 +49,6 @@ convert_pdf:
   container: "docker://dpokidov/imagemagick:7.1.0-47-ubuntu"
 
 dotnet_pisces:
-  # container: "/projects/wp2/nobackup/Twist_Myeloid/Containers/Pisces-5.2.11.simg"
   bed_files:
     branford: "references/bedfile.bed"
 
@@ -83,9 +82,9 @@ multiqc:
         - "qc/mosdepth_bed/{sample}_{type}.mosdepth.summary.txt"
         - "qc/mosdepth_bed/{sample}_{type}.regions.bed.gz"
         - "qc/mosdepth_bed/{sample}_{type}.regions.bed.gz.csi"
+        - "qc/samtools_stats/{sample}_{type}.samtools-stats.txt"
         - "qc/rseqc_gene_body_coverage/{sample}_{type}.geneBodyCoverage.txt"
         - "qc/rseqc_inner_distance/{sample}_{type}.inner_distance_freq.txt"
-        - "qc/samtools_stats/{sample}_{type}.samtools-stats.txt"
 
 rseqc_gene_body_coverage:
   bed: "references/bedfile.bed"
@@ -101,14 +100,13 @@ sample_order_for_multiqc:
 star:
   container: "docker://hydragenetics/star:2.7.10a"
   genome_index: "references/"
-  extra: "--outSAMmapqUnique 250 --quantMode GeneCounts --sjdbGTFfile references/ref.gtf --outSAMtype BAM SortedByCoordinate --chimSegmentMin 10 --chimOutType WithinBAM SoftClip --chimJunctionOverhangMin 10 --chimScoreMin 1 --chimScoreDropMax 30 --chimScoreJunctionNonGTAG 0 --chimScoreSeparation 1 --alignSJstitchMismatchNmax 5 -1 5 5 --chimSegmentReadGapMax 3"
+  extra: "--outSAMmapqUnique 60 --quantMode GeneCounts --sjdbGTFfile references/ref.gtf --outSAMtype BAM SortedByCoordinate --chimSegmentMin 10 --chimOutType WithinBAM SoftClip --chimJunctionOverhangMin 10 --chimScoreMin 1 --chimScoreDropMax 30 --chimScoreJunctionNonGTAG 0 --chimScoreSeparation 1 --alignSJstitchMismatchNmax 5 -1 5 5 --chimSegmentReadGapMax 3"
 
 star_fusion:
   container: "docker://hydragenetics/star-fusion:1.10.1"
   genome_path: "references/"
 
 summary_report:
-  # container: "/projects/wp2/nobackup/Twist_Myeloid/Containers/python3.6-pysam-xlsxwriter-yaml.simg"
   branford: "references/bedfile.bed"
 
 trimmer_software: "fastp_pe"
