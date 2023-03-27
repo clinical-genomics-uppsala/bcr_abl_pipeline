@@ -7,10 +7,10 @@ units: "units.tsv"
 default_container: "docker://hydragenetics/common:0.1.8"
 
 reference:
-  genome_dir: "/beegfs-storage/data/ref_genomes/GRCh38/reference_grasnatter/homo_sapiens_star/" # req by align not used
-  fasta: "/data/ref_genomes/hg19/genome_fasta/hg19.with.mt.fasta"
-  fai: "/data/ref_genomes/hg19/genome_fasta/hg19.with.mt.fasta.fai"
-  design_bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/bcr_abl1.bed"
+  genome_dir: "" # req by align not used
+  fasta: ""
+  fai: ""
+  design_bed: "config/bcr_abl1.bed"
   skip_chrs:
       - "chr1"
       - "chr2"
@@ -38,24 +38,24 @@ reference:
 
 arriba:
   container: "docker://hydragenetics/arriba:2.3.0"
-  assembly: "/data/ref_genomes/hg19/genome_fasta/hg19.with.mt.fasta"
-  blacklist: "/data/ref_data/arriba/arriba_v2.3.0/database/blacklist_hg19_hs37d5_GRCh37_v2.3.0.tsv.gz"
-  gtf: "/data/ref_genomes/hg19/gtf/hg19.refGene.gtf"
-  extra: "-p /data/ref_data/arriba/arriba_v2.3.0/database/protein_domains_hg19_hs37d5_GRCh37_v2.3.0.gff3 -k /data/ref_data/arriba/arriba_v2.3.0/database/known_fusions_hg19_hs37d5_GRCh37_v2.3.0.tsv.gz"
+  assembly: ""
+  blacklist: ""
+  gtf: ""
+  extra: "-p arriba_v2.3.0/database/protein_domains_hg19_hs37d5_GRCh37_v2.3.0.gff3 -k arriba_v2.3.0/database/known_fusions_hg19_hs37d5_GRCh37_v2.3.0.tsv.gz"
 
 arriba_draw_fusion:
   container: "docker://hydragenetics/arriba:2.3.0"
-  cytobands: "/data/ref_data/arriba/arriba_v2.3.0/database/cytobands_hg19_hs37d5_GRCh37_v2.3.0.tsv"
-  gtf: "/data/ref_genomes/hg19/gtf/hg19.refGene.gtf"
-  protein_domains: "/data/ref_data/arriba/arriba_v2.3.0/database/protein_domains_hg19_hs37d5_GRCh37_v2.3.0.gff3"
+  cytobands: ""
+  gtf: ""
+  protein_domains: ""
 
 convert_pdf:
   container: "docker://dpokidov/imagemagick:7.1.0-47-ubuntu"
 
 dotnet_pisces:
-  container: "/projects/wp2/nobackup/Twist_Myeloid/Containers/Pisces-5.2.11.simg"
+  container: "" # illumina pisces v5.2.11
   bed_files:
-    branford: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/branford_bcr-abl1_positions.bed"
+    branford: "branford_bcr-abl1_positions.bed"
 
 fastp_pe:
    container: "docker://hydragenetics/fastp:0.20.1"
@@ -65,12 +65,12 @@ fastqc:
   container: "docker://hydragenetics/fastqc:0.11.9"
 
 fusioncatcher: # not used but req
-  container: "docker://blcdsdockerregistry/fusioncatcher:1.33"
-  genome_path: "/beegfs-storage/data/ref_data/fusioncatcher/human_v102/human_v102"
+  container: "docker://hydragenetics/fusioncatcher:1.33"
+  genome_path: ""
 
 mosdepth_bed:
   container: "docker://hydragenetics/mosdepth:0.3.2"
-  design_bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/branford_SNVs_230118.bed"
+  design_bed: "config/branford_SNVs_230118.bed"
 
 multiqc:
   container: "docker://hydragenetics/multiqc:1.11"
@@ -94,11 +94,11 @@ multiqc:
 # rseqc_bam_stats:
 
 rseqc_gene_body_coverage:
-  bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/bcr_abl1_rseqc.bed"
+  bed: "config/bcr_abl1_rseqc.bed"
   container: "docker://hydragenetics/rseqc:4.0.0"
 
 rseqc_inner_distance:
-  bed: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/bcr_abl1_rseqc.bed"
+  bed: "config/bcr_abl1_rseqc.bed"
   container: "docker://hydragenetics/rseqc:4.0.0"
 
 sample_order_for_multiqc:
@@ -107,15 +107,15 @@ sample_order_for_multiqc:
 star:
   container: "docker://hydragenetics/star:2.7.10a"
   genome_index: "/data/ref_data/star/v2.7.10a_hg19/"
-  extra: "--outSAMmapqUnique 60 --quantMode GeneCounts --sjdbGTFfile /data/ref_genomes/hg19/gtf/hg19.refGene.gtf --outSAMtype BAM SortedByCoordinate --chimSegmentMin 10 --chimOutType WithinBAM SoftClip --chimJunctionOverhangMin 10 --chimScoreMin 1 --chimScoreDropMax 30 --chimScoreJunctionNonGTAG 0 --chimScoreSeparation 1 --alignSJstitchMismatchNmax 5 -1 5 5 --chimSegmentReadGapMax 3"
+  extra: "--outSAMmapqUnique 60 --quantMode GeneCounts --sjdbGTFfile hg19.refGene.gtf --outSAMtype BAM SortedByCoordinate --chimSegmentMin 10 --chimOutType WithinBAM SoftClip --chimJunctionOverhangMin 10 --chimScoreMin 1 --chimScoreDropMax 30 --chimScoreJunctionNonGTAG 0 --chimScoreSeparation 1 --alignSJstitchMismatchNmax 5 -1 5 5 --chimSegmentReadGapMax 3"
 
 star_fusion:
   container: "docker://hydragenetics/star-fusion:1.10.1"
-  genome_path: "/data/ref_data/star-fusion/GRCh37_gencode_v19_CTAT_lib_Mar012021.plug-n-play/ctat_genome_lib_build_dir/"
+  genome_path: ""
 
 summary_report:
-  container: "/projects/wp2/nobackup/Twist_Myeloid/Containers/python3.9-0.1.0.sif"
-  branford: "/projects/wp2/nobackup/CGU_2022_12_BCR-ABL1/Bin/bcr_abl_pipeline/config/branford_SNVs_230118.bed"
+  container: "" # python3 with xlsx, gzip and pysam libraries
+  branford: "config/branford_SNVs_230118.bed"
 
 trimmer_software: "fastp_pe"
 
