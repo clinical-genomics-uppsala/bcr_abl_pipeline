@@ -1,13 +1,13 @@
-# :snake: BCR-ABL1 pipeline for RNA data
+# 🌱 Pickett - BCR-ABL1 pipeline for RNA data 🐍
 
 
-![Lint](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/actions/workflows/lint.yaml/badge.svg?branch=develop)
-![Snakefmt](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/actions/workflows/snakefmt.yaml/badge.svg?branch=develop)
-![snakemake dry run](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/actions/workflows/snakemake-dry-run.yaml/badge.svg?branch=develop)
-![integration test](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/actions/workflows/integration1.yaml/badge.svg?branch=develop)
+![Lint](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/actions/workflows/lint.yaml/badge.svg?branch=develop)
+![Snakefmt](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/actions/workflows/snakefmt.yaml/badge.svg?branch=develop)
+![snakemake dry run](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/actions/workflows/snakemake-dry-run.yaml/badge.svg?branch=develop)
+![integration test](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/actions/workflows/integration1.yaml/badge.svg?branch=develop)
 
-![pycodestyle](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/actions/workflows/pycodestyl.yaml/badge.svg?branch=develop)
-![pytest](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/actions/workflows/pytest.yaml/badge.svg?branch=develop)
+![pycodestyle](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/actions/workflows/pycodestyl.yaml/badge.svg?branch=develop)
+![pytest](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/actions/workflows/pytest.yaml/badge.svg?branch=develop)
 
 [![License: GPL-3](https://img.shields.io/badge/License-GPL3-yellow.svg)](https://opensource.org/licenses/gpl-3.0.html)
 
@@ -37,8 +37,8 @@ In order to use this module, the following dependencies are required:
 
 ### Sample data
 
-Input data should be added to [`samples.tsv`](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/blob/develop/config/samples.tsv)
-and [`units.tsv`](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/blob/develop/config/units.tsv).
+Input data should be added to [`samples.tsv`](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/blob/develop/config/samples.tsv)
+and [`units.tsv`](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/blob/develop/config/units.tsv).
 The following information need to be added to these files:
 
 | Column Id | Description |
@@ -58,7 +58,7 @@ The following information need to be added to these files:
 | adapter | adapter sequences to be trimmed, separated by comma |
 
 ### Reference data
-Reference files should be specified in [`config.yaml`](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/blob/develop/config/config.yaml)
+Reference files should be specified in [`config.yaml`](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/blob/develop/config/config.yaml)
 - `.fasta` reference file
 -  `.gtf`  reference file
 - A design file,`.bed` over entire genes
@@ -72,7 +72,7 @@ Reference files should be specified in [`config.yaml`](https://github.com/clinic
  - `SampleSheet.csv` for sorting samples in MultiQC report
 
 ### Containers
-All containers but two are available [online](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/blob/develop/config/config.yaml). For the `.xlsx`-report a python3 enviorment with the `pysam`, `xlsxwriter` and `gzip` packages are needed. For variantcalling a container with [Illumina Pisces](https://github.com/Illumina/Pisces) v5.2.11 is needed.
+All containers but two are available [online](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/blob/develop/config/config.yaml). For the `.xlsx`-report a python3 enviorment with the `pysam`, `xlsxwriter` and `gzip` packages are needed. For variantcalling a container with [Illumina Pisces](https://github.com/Illumina/Pisces) v5.2.11 is needed.
 
 ## :white_check_mark: Testing
 
@@ -85,7 +85,7 @@ $ snakemake -n -s ../../workflow/Snakefile -j1 --use-singularity --configfile co
 
 ## :rocket: Usage
 
-To run the workflow [`resources.yaml`](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/blob/develop/config/resources.yaml) is needed together with a [snakmake profile](https://github.com/clinical-genomics-uppsala/bcr_abl_pipeline/blob/develop/snakemake_profile/config.yaml). If used on the CGU compute cluster the `start_bcr_abl1_pipeline.sh` can be used.
+To run the workflow [`resources.yaml`](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/blob/develop/config/resources.yaml) is needed together with a [snakmake profile](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/blob/develop/snakemake_profile/config.yaml). If used on the CGU compute cluster the `start_bcr_abl1_pipeline.sh` can be used.
 
 ### Output files
 
