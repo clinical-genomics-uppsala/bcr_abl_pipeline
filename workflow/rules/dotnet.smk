@@ -11,7 +11,7 @@ rule dotnet_pisces:
         fasta=config.get("reference", {}).get("fasta", ""),
         bed="snv_indels/bed_split/design_bedfile_{chr}.bed",
     output:
-        vcf=temp("snv_indels/pisces/{sample}_{type}_{chr}_bad_name/{sample}_{type}_{chr}.vcf"),
+        vcf=temp("snv_indels/pisces/{sample}_{type}_{chr}_bad_name/{sample}_{type}_{chr}.genome.vcf"),
         pisces_log=temp("snv_indels/pisces/{sample}_{type}_{chr}_bad_name/PiscesLogs/PiscesLog.txt"),
         pisces_options=temp("snv_indels/pisces/{sample}_{type}_{chr}_bad_name/PiscesLogs/PiscesOptions.used.json"),
     params:

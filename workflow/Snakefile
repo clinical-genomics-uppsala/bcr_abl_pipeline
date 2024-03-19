@@ -11,6 +11,7 @@ include: "rules/bcftools.smk"
 include: "rules/dotnet.smk"
 include: "rules/sample_order_for_multiqc.smk"
 include: "rules/summary_report.smk"
+include: "rules/create_background_file.smk"
 
 
 ruleorder: cp_bai > alignment_samtools_index
