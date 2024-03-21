@@ -18,6 +18,12 @@ with gzip.open(snakemake.input.mosdepth_regions, 'rt') as mosdepthfile:
         line = lline.strip().split("\t")
         depth_dict[line[3]] = int(float(line[4]))
 
+background_table = []
+with open(snakemake.input.background, "r") as backgroundfile:
+    for lline in backgroundfile:
+        line = lline.strip().split("\t")
+        background_table.append(line)
+
 # All positions in Branford list
 # Add vaiant change in bedfile chr, pos, mutation name, , ref, alt, c-name
 branfordVariants = []
@@ -26,10 +32,33 @@ with open(snakemake.input.branford, 'r') as branfordfile:
         branfordVariants.append(line.strip().split("\t"))
 
 branfordSNV = []
-branfordHeader = ["Mutation", "Transcript", "Chr", "Pos", "Ref", "Alt", "Allelic Freq", "Allelic Depth", "Depth"]
+branfordHeader = [
+    "Mutation",
+    "Transcript",
+    "Chr",
+    "Pos",
+    "Ref",
+    "Alt",
+    "Allelic Freq",
+    "Allelic Depth",
+    "Depth",
+    "Background Median",
+]
 
 allSNVs = []
-allHeader = ["Sample", "Chr", "Pos", "Ref", "Alts", "Allelic Freq", "Depth", "Allelic Depth", "Filter flag"]
+allHeader = [
+    "Sample",
+    "Chr",
+    "Pos",
+    "Ref",
+    "Alts",
+    "Allelic Freq",
+    "Depth",
+    "Allelic Depth",
+    "Number of SD from panel median",
+    "Background Median",
+    "Filter flag",
+]
 
 for record in vcf.fetch():
     if record.filter.keys() == ["PASS"]:
@@ -37,8 +66,26 @@ for record in vcf.fetch():
     else:
         filter = ", ".join(list(record.filter))
 
-    outline = [sample, record.contig, str(record.pos), record.ref, ";".join(record.alts), ';'.join(map(str, record.info["AF"])),
-               str(record.info["DP"]), ";".join(map(str, record.samples[sample].get("AD"))), filter]
+    bkg_median = record.info["PanelMedian"]
+    if bkg_median == 0:
+        bkg_median = "NA"
+        bkg_nr_sd = "NA"
+    else:
+        bkg_nr_sd = record.info["PositionNrSD"]
+
+    outline = [
+        sample,
+        record.contig,
+        str(record.pos),
+        record.ref,
+        ";".join(record.alts),
+        ";".join(map(str, record.info["AF"])),
+        str(record.info["DP"]),
+        ";".join(map(str, record.samples[sample].get("AD"))),
+        bkg_nr_sd,
+        bkg_median,
+        filter,
+    ]
     allSNVs.append(outline)
 
     for b_line in branfordVariants:  # chr, pos, ref, alt, mutation, name
@@ -117,19 +164,21 @@ worksheetOver.write_url(8, 0, "internal:'SNV variants'!A1", string="ABL1 variant
 worksheetOver.write_url(9, 0, "internal:'Fusions'!A1", string="Fusions")
 worksheetOver.write_row(11, 0, emptyList, lineFormat)
 
-worksheetOver.write(14, 0, "Branford list used: "+str(snakemake.input.branford))
-worksheetOver.write(15, 0, "Bedfile used for variantcalling: "+str(snakemake.input.bed))
+worksheetOver.write(14, 0, "Branford list used: " + str(snakemake.input.branford))
+worksheetOver.write(15, 0, "Bedfile used for variantcalling: " + str(snakemake.input.bed))
+worksheetOver.write(16, 0, "Backgroundfile used: " + str(snakemake.input.background))
 
 
 ''' Branford list sheet '''
 worksheetBran.write("A1", "Branford variants found", headingFormat)
-worksheetBran.write("A3", "Sample: "+str(sample))
-worksheetBran.write("A4", "Branford file: "+str(snakemake.input.branford))
-worksheetBran.set_column('B:B', 28)
-worksheetBran.set_column('D:D', 10)
+worksheetBran.write("A3", "Sample: " + str(sample))
+worksheetBran.write("A4", "Branford file: " + str(snakemake.input.branford))
+worksheetBran.write("A5", "Backgroundfile used: " + str(snakemake.input.background))
+worksheetBran.set_column("B:B", 28)
+worksheetBran.set_column("D:D", 10)
 
-worksheetBran.write_row("A6", branfordHeader, tableHeadFormat)
-row = 6
+worksheetBran.write_row("A7", branfordHeader, tableHeadFormat)
+row = 7
 col = 0
 for line in branfordSNV:
     worksheetBran.write_row(row, col, line)
@@ -140,10 +189,11 @@ for line in branfordSNV:
 worksheetSNV.write("A1", "Variants found in ABL1 or BCR", headingFormat)
 worksheetSNV.write("A3", "Sample: " + str(sample))
 worksheetSNV.write("A4", "Bedfile used: " + str(snakemake.input.bed))
-worksheetSNV.set_column('C:C', 10)
+worksheetSNV.write("A5", "Backgroundfile used: " + str(snakemake.input.background))
+worksheetSNV.set_column("C:C", 10)
 
-worksheetSNV.write_row("A6", allHeader, tableHeadFormat)
-row = 6
+worksheetSNV.write_row("A7", allHeader, tableHeadFormat)
+row = 7
 for line in allSNVs:
     worksheetSNV.write_row(row, col, line)
     row += 1

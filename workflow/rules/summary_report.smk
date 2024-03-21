@@ -3,15 +3,16 @@ __copyright__ = "Copyright 2022, Arielle R. Munters"
 __email__ = "arielle.munters@scilifelab.uu.se"
 __license__ = "GPL-3"
 
-
 rule summary_report:
     input:
-        vcf="snv_indels/pisces/{sample}_{type}.normalized.sorted.vcf.gz",
+        vcf="snv_indels/pisces/{sample}_{type}.normalized.sorted.background_annotated.vcf.gz",
+        tbi="snv_indels/pisces/{sample}_{type}.normalized.sorted.background_annotated.vcf.gz.tbi",
         branford=config["summary_report"]["branford"],
         bed=config["reference"]["design_bed"],
         mosdepth_regions="qc/mosdepth_bed/{sample}_{type}.regions.bed.gz",
         arriba_tsv="fusions/arriba/{sample}_{type}.fusions.tsv",
         jpg="fusions/arriba_draw_fusion/{sample}_{type}_page1.jpg",
+        background=config["reference"]["background"],
     output:
         xlsx="Results/{sample}_{type}_summary.xlsx",
     params:
