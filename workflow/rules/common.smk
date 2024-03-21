@@ -69,8 +69,8 @@ def compile_output_list(wildcards):
                 "bam.bai",
                 "arriba.fusions.tsv",
                 "arriba.pdf",
-                "normalized.sorted.vcf.gz",
-                "normalized.sorted.vcf.gz.tbi",
+                "normalized.sorted.background_annotated.vcf.gz",
+                "normalized.sorted.background_annotated.vcf.gz.tbi",
                 "config.yaml",
             ]
         ]

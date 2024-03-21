@@ -95,16 +95,16 @@ rule cp_bai:
 
 rule cp_vcf:
     input:
-        "snv_indels/pisces/{sample}_R.normalized.sorted.vcf.gz",
+        "snv_indels/pisces/{sample}_R.normalized.sorted.background_annotated.vcf.gz",
     output:
-        "Results/{sample}_R/{sample}_R.normalized.sorted.vcf.gz",
+        "Results/{sample}_R/{sample}_R.normalized.sorted.background_annotated.vcf.gz",
     params:
         extra=config.get("cp_vcf", {}).get("extra", ""),
     log:
-        "cp_results/{sample}_R.normalized.sorted.vcf.gz.log",
+        "cp_results/{sample}_R.normalized.sorted.background_annotated.vcf.gz.log",
     benchmark:
         repeat(
-            "cp_results/{sample}_R.normalized.sorted.vcf.gz.benchmark.tsv", config.get("cp_vcf", {}).get("benchmark_repeats", 1)
+            "cp_results/{sample}_R.normalized.sorted.background_annotated.vcf.gz.benchmark.tsv", config.get("cp_vcf", {}).get("benchmark_repeats", 1)
         )
     threads: config.get("cp_vcf", {}).get("threads", config["default_resources"]["threads"])
     resources:
@@ -123,16 +123,16 @@ rule cp_vcf:
 
 rule cp_tbi:
     input:
-        "snv_indels/pisces/{sample}_R.normalized.sorted.vcf.gz.tbi",
+        "snv_indels/pisces/{sample}_R.normalized.sorted.background_annotated.vcf.gz.tbi",
     output:
-        "Results/{sample}_R/{sample}_R.normalized.sorted.vcf.gz.tbi",
+        "Results/{sample}_R/{sample}_R.normalized.background_annotated.vcf.gz.tbi",
     params:
         extra=config.get("cp_tbi", {}).get("extra", ""),
     log:
-        "cp_results/{sample}_R.normalized.sorted.vcf.gz.tbi.log",
+        "cp_results/{sample}_R.normalized.sorted.background_annotated.vcf.gz.tbi.log",
     benchmark:
         repeat(
-            "cp_results/{sample}_R.normalized.sorted.vcf.gz.tbi.benchmark.tsv",
+            "cp_results/{sample}_R.normalized.sorted.background_annotated.vcf.gz.tbi.benchmark.tsv",
             config.get("cp_tbi", {}).get("benchmark_repeats", 1),
         )
     threads: config.get("cp_tbi", {}).get("threads", config["default_resources"]["threads"])
