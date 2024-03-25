@@ -3,7 +3,12 @@ __copyright__ = "Copyright 2022, Arielle R. Munters"
 __email__ = "arielle.munters@scilifelab.uu.se"
 __license__ = "GPL-3"
 
+import itertools
+import numpy as np
 import pandas as pd
+import pathlib
+import re
+import yaml
 from snakemake.utils import validate
 from snakemake.utils import min_version
 
@@ -14,6 +19,10 @@ from hydra_genetics import min_version as hydra_min_version
 
 hydra_min_version("0.15.0")
 min_version("6.8.0")
+
+
+include: "results.smk"
+
 
 ### Set and validate config file
 
@@ -39,6 +48,12 @@ units = (
     .sort_index()
 )
 validate(units, schema="../schemas/units.schema.yaml")
+
+
+### Read and validate output
+with open(config["output"], "r") as f:
+    output_spec = yaml.safe_load(f.read())
+    validate(output_spec, schema="../schemas/output_files.schema.yaml", set_default=True)
 
 
 def get_gvcfs(units: pandas.DataFrame) -> typing.List[str]:
@@ -85,29 +100,4 @@ wildcard_constraints:
     type="N|T|R",
 
 
-def compile_output_list(wildcards):
-    output_files = [] #["Results/MultiQC_R.html"]s
-    output_files.append(
-        [
-            "Results/%s_%s/%s_%s.%s" % (sample, type, sample, type, suffix)
-            for sample in get_samples(samples)
-            for type in get_unit_types(units, sample)
-            for suffix in [
-                # "bam",
-                # "bam.bai",
-#                "arriba.fusions.tsv",
-#                "arriba.pdf",
-                "merged.vcf.gz",
-                "merged.vcf.gz.tbi",
-                "config.yaml",
-            ]
-        ]
-    )
-    # output_files.append(
-    #     [s
-    #         "Results/%s_%s_summary.xlsx" % (sample, type)
-    #         for sample in get_samples(samples)
-    #         for type in get_unit_types(units, sample)
-    #     ]
-    # )
-    return output_files
+generate_copy_rules(output_spec)

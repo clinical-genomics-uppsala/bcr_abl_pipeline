@@ -6,16 +6,10 @@ __license__ = "GPL-3"
 
 include: "rules/common.smk"
 include: "rules/convert_pdf.smk"
-include: "rules/cp_results.smk"
 include: "rules/bcftools.smk"
 include: "rules/dotnet.smk"
 include: "rules/sample_order_for_multiqc.smk"
 include: "rules/summary_report.smk"
-include: "rules/create_background_file.smk"
-
-
-ruleorder: cp_bai > alignment_samtools_index
-ruleorder: cp_tbi > snv_indels_tabix
 
 
 report: "report/workflow.rst"
@@ -23,7 +17,7 @@ report: "report/workflow.rst"
 
 rule all:
     input:
-        unpack(compile_output_list),
+        compile_output_file_list,
 
 
 # modules
@@ -166,20 +160,3 @@ use rule multiqc from qc as qc_multiqc with:
 use rule samtools_stats from qc as qc_samtools_stats with:
     input:
         bam="alignment/star/{sample}_{type}.bam",
-
-
-module misc:
-    snakefile:
-        github(
-            "hydra-genetics/misc",
-            path="workflow/Snakefile",
-            tag="0d87e32",
-        )
-    config:
-        config
-
-
-use rule bedtools_intersect from misc as misc_bedtools_intersect with:
-    input:
-        left="{module}/{caller}/{file}.vcf.gz",
-        right=lambda wildcards: config.get(wildcards.caller, {}).get("bed_files", {}).get(wildcards.bed, ""),
