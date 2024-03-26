@@ -1,4 +1,3 @@
-
 import gzip
 import statistics
 import sys
@@ -12,7 +11,7 @@ background_dict = {}
 
 for file_name in gvcf_files:
     print(file_name)
-    with gzip.open(file_name, 'rt') as infile:
+    with gzip.open(file_name, "rt") as infile:
         file_content = infile.read().split("\n")
         header = True
         for line in file_content:
@@ -36,11 +35,11 @@ for file_name in gvcf_files:
                     AD_id += 1
                 AD_info = data[AD_id].split(",")
                 if columns[4] == ".":
-                    alt_AF = float(data[AD_id+2])
+                    alt_AF = float(data[AD_id + 2])
                 else:
-                    #ref_AD = int(AD_info[0])
+                    # ref_AD = int(AD_info[0])
                     # import pdb; pdb.set_trace()
-                    DP = int(data[AD_id+1])
+                    DP = int(data[AD_id + 1])
                     alt_AD = DP - sum([int(x) for x in AD_info])
                     for AD in AD_info[1:]:
                         alt_AD += int(AD)
@@ -64,12 +63,22 @@ for key in background_dict:
     nr_obs = len(background_dict[key])
     if nr_obs >= 4:
         median_background = statistics.median(background_dict[key])
-        '''This is the sample variance s² with Bessel’s correction, also known as variance with N-1 degrees of freedom.
+        """This is the sample variance s² with Bessel’s correction, also known as variance with N-1 degrees of freedom.
         Provided that the data points are representative (e.g. independent and identically distributed),
-        the result should be an unbiased estimate of the true population variance.'''
+        the result should be an unbiased estimate of the true population variance."""
         stdev_background = statistics.stdev(background_dict[key])
         background_file.write(
-           "chr" + key.split("_")[0] + "\t" + key.split("_")[1] + "\t" + str(median_background) + "\t" + str(stdev_background) + "\t" + str(nr_obs) + "\n"
+            "chr"
+            + key.split("_")[0]
+            + "\t"
+            + key.split("_")[1]
+            + "\t"
+            + str(median_background)
+            + "\t"
+            + str(stdev_background)
+            + "\t"
+            + str(nr_obs)
+            + "\n"
         )
 
 background_file.close()

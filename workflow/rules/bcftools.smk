@@ -35,5 +35,3 @@ rule bcftools_reheader:
     shell:
         "echo {wildcards.sample}_{wildcards.type} > {output.samplename} && "
         "(bcftools reheader -s {output.samplename} -o {output.vcf} {input.vcf} ) &> {log}"
-
-
