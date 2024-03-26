@@ -57,7 +57,7 @@ for file_name in gvcf_files:
                 else:
                     background_dict[key] = [alt_AF]
 
-background_file.write("Median\tSD\tNrSamples\n")
+background_file.write("Chr\tPos\tMedian\tSD\tNrSamples\n")
 for key in background_dict:
     background_dict[key].sort()
     nr_obs = len(background_dict[key])

@@ -6,7 +6,8 @@ __license__ = "GPL3"
 
 rule create_background_file:
     input:
-        gvcfs=get_gvcfs(units),
+        gvcfs=expand("snv_indels/pisces/{sample}_R.merged.vcf.gz", sample=samples.index),
+        tbis=expand("snv_indels/pisces/{sample}_R.merged.vcf.gz.tbi", sample=samples.index),
     output:
         background_file=temp("references/create_background_file/background_panel.tsv"),
     params:
