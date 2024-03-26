@@ -11,6 +11,7 @@ reference:
   fasta: ""
   fai: ""
   design_bed: "config/bcr_abl1.bed"
+  background: "config/background_panel.tsv"
   skip_chrs:
     - "chr1"
     - "chr2"

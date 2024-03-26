@@ -6,7 +6,7 @@ __license__ = "GPL-3"
 
 rule bcftools_reheader:
     input:
-        vcf="snv_indels/pisces/{sample}_{type}_{chr}_bad_name/{sample}_{type}_{chr}.genome.vcf",
+        vcf="snv_indels/pisces/{sample}_{type}_{chr}_bad_name/{sample}_{type}_{chr}.vcf",
     output:
         vcf=temp("snv_indels/pisces/{sample}_{type}_{chr}.vcf"),
         samplename=temp("snv_indels/pisces/{sample}_{type}_{chr}.name.txt"),

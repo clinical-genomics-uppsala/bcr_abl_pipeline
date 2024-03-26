@@ -15,12 +15,48 @@ include: "rules/summary_report.smk"
 report: "report/workflow.rst"
 
 
+ruleorder: snv_indels_bgzip > annotation_bgzip_vcf
+ruleorder: snv_indels_tabix > annotation_tabix_vcf
+
+
 rule all:
     input:
         compile_output_file_list,
 
 
 # modules
+
+
+module annotation:
+    snakefile:
+        github(
+            "hydra-genetics/annotation",
+            path="workflow/Snakefile",
+            tag="b25e8ea",
+        )
+    config:
+        config
+
+
+use rule * from annotation as annotation_*
+
+
+use rule background_annotation from annotation as annotation_background_annotation with:
+    input:
+        background=config["reference"]["background"],
+        vcf="snv_indels/pisces/{sample}_R.normalized.sorted.vcf.gz",
+        tbi="snv_indels/pisces/{sample}_R.normalized.sorted.vcf.gz.tbi",
+    output:
+        vcf=temp("snv_indels/pisces/{sample}_R.normalized.sorted.background_annotated.vcf"),
+    log:
+        "snv_indels/pisces/{sample}_R.normalized.sorted.background_annotated.vcf.log",
+    benchmark:
+        repeat(
+            "snv_indels/pisces/{sample}_R.normalized.sorted.background_annotated.vcf.benchmark.tsv",
+            config.get("background_annotation", {}).get("benchmark_repeats", 1),
+        )
+
+
 module prealignment:
     snakefile:
         github(
@@ -73,7 +109,7 @@ module snv_indels:
         github(
             "hydra-genetics/snv_indels",
             path="workflow/Snakefile",
-            tag="a871325",
+            tag="ebf6671",
         )
     config:
         config
