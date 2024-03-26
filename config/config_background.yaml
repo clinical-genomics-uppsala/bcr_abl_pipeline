@@ -1,5 +1,5 @@
 ---
-output: "config/output_files_references.yaml"
+output: "config/output_files_background.yaml"
 
 dotnet_pisces:
   extra: "--gvcf TRUE --filterduplicates TRUE"
