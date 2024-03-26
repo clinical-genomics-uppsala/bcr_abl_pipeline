@@ -32,8 +32,6 @@ rule summary_report:
         time=config.get("summary_report", {}).get("time", config["default_resources"]["time"]),
     container:
         config.get("summary_report", {}).get("container", config["default_container"])
-    conda:
-        "../envs/summary_report.yaml"
     message:
         "{rule}: Summarize {input.vcf} results in {output.xlsx}"
     script:
