@@ -4,7 +4,7 @@ samples: "samples.tsv"
 units: "units.tsv"
 output: "config/output_files.yaml"
 
-default_container: "docker://hydragenetics/common:0.1.8"
+default_container: "docker://hydragenetics/common:1.11.1"
 
 reference:
   genome_dir: "" # req by align not used
@@ -115,7 +115,6 @@ star_fusion:
   genome_path: ""
 
 summary_report:
-  container: "" # python3 with xlsx, gzip and pysam libraries
   branford: "config/branford_SNVs_230118.bed"
 
 trimmer_software: "fastp_pe"
