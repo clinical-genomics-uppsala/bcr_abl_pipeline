@@ -55,8 +55,6 @@ convert_pdf:
 
 dotnet_pisces:
   container: "" # illumina pisces v5.2.11
-  bed_files:
-    branford: "branford_bcr-abl1_positions.bed"
 
 fastp_pe:
   container: "docker://hydragenetics/fastp:0.20.1"
