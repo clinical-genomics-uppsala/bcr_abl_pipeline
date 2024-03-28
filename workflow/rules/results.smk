@@ -5,17 +5,20 @@ import pathlib
 
 
 def compile_output_file_list(wildcards):
-    outdir = pathlib.Path(output_spec["directory"])
+    outdir = pathlib.Path(output_spec.get("directory", "./"))
     output_files = []
-    wc_df = pd.DataFrame(units.values)
-    wc_df.columns = units.columns
 
     for f in output_spec["files"]:
-        outputpaths = set(expand(f["output"], zip, **wc_df.to_dict("list")))
-        if len(outputpaths) == 0:
-            # Using expand with zip on a pattern without any wildcards results
-            # in an empty list. Then just add the output filename as it is.
-            outputpaths = [f["output"]]
+        # Please remember to add any additional values down below
+        # that the output strings should be formatted with.
+        outputpaths = set(
+            [
+                f["output"].format(sample=sample, type=unit_type)
+                for sample in get_samples(samples)
+                for unit_type in get_unit_types(units, sample)
+            ]
+        )
+
         for op in outputpaths:
             output_files.append(outdir / Path(op))
 
