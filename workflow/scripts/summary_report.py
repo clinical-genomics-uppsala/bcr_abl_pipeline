@@ -18,6 +18,12 @@ with gzip.open(snakemake.input.mosdepth_regions, "rt") as mosdepthfile:
         line = lline.strip().split("\t")
         depth_dict[line[3]] = int(float(line[4]))
 
+background_table = []
+with open(snakemake.input.background, "r") as backgroundfile:
+    for lline in backgroundfile:
+        line = lline.strip().split("\t")
+        background_table.append(line)
+
 # All positions in Branford list
 # Add vaiant change in bedfile chr, pos, mutation name, , ref, alt, c-name
 branfordVariants = []
@@ -26,16 +32,46 @@ with open(snakemake.input.branford, "r") as branfordfile:
         branfordVariants.append(line.strip().split("\t"))
 
 branfordSNV = []
-branfordHeader = ["Mutation", "Transcript", "Chr", "Pos", "Ref", "Alt", "Allelic Freq", "Allelic Depth", "Depth"]
+branfordHeader = [
+    "Mutation",
+    "Transcript",
+    "Chr",
+    "Pos",
+    "Ref",
+    "Alt",
+    "Allelic Freq",
+    "Allelic Depth",
+    "Depth",
+    "Background Median",
+]
 
 allSNVs = []
-allHeader = ["Sample", "Chr", "Pos", "Ref", "Alts", "Allelic Freq", "Depth", "Allelic Depth", "Filter flag"]
+allHeader = [
+    "Sample",
+    "Chr",
+    "Pos",
+    "Ref",
+    "Alts",
+    "Allelic Freq",
+    "Depth",
+    "Allelic Depth",
+    "Number of SD from panel median",
+    "Background Median",
+    "Filter flag",
+]
 
 for record in vcf.fetch():
     if record.filter.keys() == ["PASS"]:
         filter = ""
     else:
         filter = ", ".join(list(record.filter))
+
+    bkg_median = record.info["PanelMedian"]
+    if bkg_median == 0:
+        bkg_median = "NA"
+        bkg_nr_sd = "NA"
+    else:
+        bkg_nr_sd = record.info["PositionNrSD"]
 
     outline = [
         sample,
@@ -46,6 +82,8 @@ for record in vcf.fetch():
         ";".join(map(str, record.info["AF"])),
         str(record.info["DP"]),
         ";".join(map(str, record.samples[sample].get("AD"))),
+        bkg_nr_sd,
+        bkg_median,
         filter,
     ]
     allSNVs.append(outline)
@@ -65,6 +103,16 @@ for b_line in branfordVariants:
     ordered_b_line = [b_line[6], b_line[3], b_line[0], str(b_line[2]), b_line[4], b_line[5]]
     if ordered_b_line not in [outlines[0:6] for outlines in branfordSNV]:
         branfordSNV.append(ordered_b_line + ["", "", str(depth_dict[ordered_b_line[1]])])
+
+# Add background median for each bradford position
+i = 0
+for bradford_line in branfordSNV:
+    for line in background_table:
+        if line[1] == bradford_line[3]:
+            background_median = line[2]
+            break
+    branfordSNV[i].append(background_median)
+    i += 1
 
 # Add fusions from Arriba
 fusion_lines = []
@@ -149,17 +197,19 @@ worksheetOver.write_row(11, 0, emptyList, lineFormat)
 
 worksheetOver.write(14, 0, "Branford list used: " + str(snakemake.input.branford))
 worksheetOver.write(15, 0, "Bedfile used for variantcalling: " + str(snakemake.input.bed))
+worksheetOver.write(16, 0, "Backgroundfile used: " + str(snakemake.input.background))
 
 
 """ Branford list sheet """
 worksheetBran.write("A1", "Branford variants found", headingFormat)
 worksheetBran.write("A3", "Sample: " + str(sample))
 worksheetBran.write("A4", "Branford file: " + str(snakemake.input.branford))
+worksheetBran.write("A5", "Backgroundfile used: " + str(snakemake.input.background))
 worksheetBran.set_column("B:B", 28)
 worksheetBran.set_column("D:D", 10)
 
-worksheetBran.write_row("A6", branfordHeader, tableHeadFormat)
-row = 6
+worksheetBran.write_row("A7", branfordHeader, tableHeadFormat)
+row = 7
 col = 0
 for line in branfordSNV:
     worksheetBran.write_row(row, col, line)
@@ -170,10 +220,11 @@ for line in branfordSNV:
 worksheetSNV.write("A1", "Variants found in ABL1 or BCR", headingFormat)
 worksheetSNV.write("A3", "Sample: " + str(sample))
 worksheetSNV.write("A4", "Bedfile used: " + str(snakemake.input.bed))
+worksheetSNV.write("A5", "Backgroundfile used: " + str(snakemake.input.background))
 worksheetSNV.set_column("C:C", 10)
 
-worksheetSNV.write_row("A6", allHeader, tableHeadFormat)
-row = 6
+worksheetSNV.write_row("A7", allHeader, tableHeadFormat)
+row = 7
 for line in allSNVs:
     worksheetSNV.write_row(row, col, line)
     row += 1
