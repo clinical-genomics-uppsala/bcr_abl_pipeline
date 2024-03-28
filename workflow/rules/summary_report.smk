@@ -3,6 +3,7 @@ __copyright__ = "Copyright 2022, Arielle R. Munters"
 __email__ = "arielle.munters@scilifelab.uu.se"
 __license__ = "GPL-3"
 
+
 rule summary_report:
     input:
         vcf="snv_indels/pisces/{sample}_{type}.normalized.sorted.background_annotated.vcf.gz",
@@ -33,8 +34,6 @@ rule summary_report:
         time=config.get("summary_report", {}).get("time", config["default_resources"]["time"]),
     container:
         config.get("summary_report", {}).get("container", config["default_container"])
-    conda:
-        "../envs/summary_report.yaml"
     message:
         "{rule}: Summarize {input.vcf} results in {output.xlsx}"
     script:

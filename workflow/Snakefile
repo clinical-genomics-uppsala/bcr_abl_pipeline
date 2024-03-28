@@ -6,15 +6,12 @@ __license__ = "GPL-3"
 
 include: "rules/common.smk"
 include: "rules/convert_pdf.smk"
-include: "rules/cp_results.smk"
 include: "rules/bcftools.smk"
 include: "rules/dotnet.smk"
 include: "rules/sample_order_for_multiqc.smk"
 include: "rules/summary_report.smk"
 
 
-ruleorder: cp_bai > alignment_samtools_index
-ruleorder: cp_tbi > snv_indels_tabix
 ruleorder: snv_indels_bgzip > annotation_bgzip_vcf
 ruleorder: snv_indels_tabix > annotation_tabix_vcf
 
@@ -22,12 +19,48 @@ ruleorder: snv_indels_tabix > annotation_tabix_vcf
 report: "report/workflow.rst"
 
 
+ruleorder: snv_indels_bgzip > annotation_bgzip_vcf
+ruleorder: snv_indels_tabix > annotation_tabix_vcf
+
+
 rule all:
     input:
-        unpack(compile_output_list),
+        compile_output_file_list,
 
 
 # modules
+
+
+module annotation:
+    snakefile:
+        github(
+            "hydra-genetics/annotation",
+            path="workflow/Snakefile",
+            tag="b25e8ea",
+        )
+    config:
+        config
+
+
+use rule * from annotation as annotation_*
+
+
+use rule background_annotation from annotation as annotation_background_annotation with:
+    input:
+        background=config["reference"]["background"],
+        vcf="snv_indels/pisces/{sample}_R.normalized.sorted.vcf.gz",
+        tbi="snv_indels/pisces/{sample}_R.normalized.sorted.vcf.gz.tbi",
+    output:
+        vcf=temp("snv_indels/pisces/{sample}_R.normalized.sorted.background_annotated.vcf"),
+    log:
+        "snv_indels/pisces/{sample}_R.normalized.sorted.background_annotated.vcf.log",
+    benchmark:
+        repeat(
+            "snv_indels/pisces/{sample}_R.normalized.sorted.background_annotated.vcf.benchmark.tsv",
+            config.get("background_annotation", {}).get("benchmark_repeats", 1),
+        )
+
+
 module prealignment:
     snakefile:
         github(
