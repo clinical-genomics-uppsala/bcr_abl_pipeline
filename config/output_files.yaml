@@ -10,7 +10,7 @@ files:
     output: "{sample}_R/{sample}_R.bam"
 
   - name: bai file
-    input: null
+    input: alignment/star/{sample}_R.bam.bai
     output: "{sample}_R/{sample}_R.bam.bai"
 
   - name: vcf file
@@ -18,7 +18,7 @@ files:
     output: "{sample}_R/{sample}_R.normalized.sorted.background_annotated.vcf.gz"
 
   - name: tbi file
-    input: null
+    input: "snv_indels/pisces/{sample}_R.normalized.sorted.background_annotated.vcf.gz.tbi"
     output: "{sample}_R/{sample}_R.normalized.sorted.background_annotated.vcf.gz.tbi"
 
   - name: arriba tsv
