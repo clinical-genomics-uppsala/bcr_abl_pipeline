@@ -71,7 +71,7 @@ Reference files should be specified in [`config.yaml`](config/config.yaml)
     -  Cytobands
  - rseq bedfile
  - `SampleSheet.csv` for sorting samples in MultiQC report
- - Background-file to annotate calls with (see more [below](#background))
+ - Background-file to annotate calls with (see more [below](#backgroundreference-pipeline))
 
 ### Containers
 All containers but one are available on [Dockerhub](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/blob/master/config/config.yaml). For variantcalling a container with [Illumina Pisces](https://github.com/Illumina/Pisces) v5.2.11 is needed.

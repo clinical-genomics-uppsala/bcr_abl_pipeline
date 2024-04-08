@@ -33,7 +33,7 @@ rule dotnet_pisces:
     container:
         config.get("dotnet_pisces", {}).get("container", config["default_container"])
     message:
-        "{rule}: Call variants using Illumina Pisces on alignment/samtools_extract_reads/{wildcards.sample}_{wildcards.type}_{wildcards.chr}.bam"
+        "{rule}: Call variants using Illumina Pisces on {input.bam}"
     shell:
         "REF_FOLDER=`dirname {input.fasta}` && "
         "OUTPUT_FOLDER=`dirname {output.vcf}` && "
