@@ -54,7 +54,7 @@ convert_pdf:
   container: "docker://dpokidov/imagemagick:7.1.0-47-ubuntu"
 
 dotnet_pisces:
-  container: "" # illumina pisces v5.2.11
+  container: "container_pisces_v5.2.11.sif" # illumina pisces v5.2.11
 
 fastp_pe:
   container: "docker://hydragenetics/fastp:0.20.1"
