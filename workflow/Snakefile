@@ -191,7 +191,7 @@ use rule multiqc from qc as qc_multiqc with:
                     ]
                     + [".dup", "_R"]
                 )
-                + '}"',
+            + '}"',
 
 
 use rule samtools_stats from qc as qc_samtools_stats with:
