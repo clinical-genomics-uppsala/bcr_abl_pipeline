@@ -1,2 +1,4 @@
 sample	type	platform	machine	flowcell	lane	barcode	fastq1	fastq2	adapter
-NA12878	R	illumina	miseq	1	L001	ACGGAACA	input/R1.fq.gz	input/R2.fq.gz	AAAA,TTTT
+NA4242	R	illumina	miseq	2	L002	ACGGAACA	input/maja_S10_R1.fq.gz	input/maja_S10_R2.fq.gz	AAAA,TTTT
+NA12878	R	illumina	miseq	1	L001	ACGGAACA	input/pelle_S1_R1.fq.gz	input/pelle_S1_R2.fq.gz	AAAA,TTTT
+NA4242	R	illumina	miseq	2	L001	ACGGAACA	input/maja_S10_R1.fq.gz	input/maja_S10_R2.fq.gz	AAAA,TTTT
