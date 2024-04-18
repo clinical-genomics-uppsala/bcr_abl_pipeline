@@ -222,15 +222,6 @@ properties:
       - container
       - bed
   
-  samples_order_for_multiqc:
-    type: object
-    properties:
-      sample_sheet:
-        type: string
-        description: samples sheet from illumina machine used to order samples in multiqc reports
-    required:
-      - sample_sheet
-  
   star:
     type: object
     properties:
@@ -310,7 +301,6 @@ required:
   - multiqc
   - rseqc_gene_body_coverage
   - rseqc_inner_distance
-  - sample_order_for_multiqc
   - star
   - star_fusion
   - summary_report
