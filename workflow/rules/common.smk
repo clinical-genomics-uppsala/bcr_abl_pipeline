@@ -13,6 +13,7 @@ from datetime import datetime
 from snakemake.utils import validate
 from snakemake.utils import min_version
 
+from hydra_genetics.utils.misc import replace_dict_variables
 from hydra_genetics.utils.resources import load_resources
 from hydra_genetics.utils.samples import *
 from hydra_genetics.utils.units import *
@@ -29,6 +30,9 @@ include: "results.smk"
 
 if not workflow.overwrite_configfiles:
     sys.exit("At least one config file must be passed using --configfile/--configfiles, by command line or a profile!")
+
+
+config = replace_dict_variables(config)
 
 try:
     validate(config, schema="../schemas/config.schema.yaml")

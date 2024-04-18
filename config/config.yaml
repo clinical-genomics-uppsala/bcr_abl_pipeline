@@ -2,7 +2,7 @@
 resources: "resources.yaml"
 samples: "samples.tsv"
 units: "units.tsv"
-output: "config/output_files.yaml"
+output: "{{PATH_TO_REPO}}/pickett_bcr_abl_pipeline/config/output_files.yaml"
 
 default_container: "docker://hydragenetics/common:1.11.1"
 
@@ -10,7 +10,7 @@ reference:
   genome_dir: "" # req by align not used
   fasta: ""
   fai: ""
-  design_bed: "config/bcr_abl1.bed"
+  design_bed: "{{PATH_TO_REPO}}/pickett_bcr_abl_pipeline/config/bcr_abl1.bed"
   background: "references/create_background_file/background_panel.tsv"
   skip_chrs:
     - "chr1"
@@ -69,13 +69,13 @@ fusioncatcher: # not used but req
 
 mosdepth_bed:
   container: "docker://hydragenetics/mosdepth:0.3.2"
-  design_bed: "config/branford_SNVs_230118.bed"
+  design_bed: "{{PATH_TO_REPO}}/pickett_bcr_abl_pipeline/config/branford_SNVs_230118.bed"
 
 multiqc:
   container: "docker://hydragenetics/multiqc:1.11"
   reports:
     RNA:
-      config: "multiqc_config_rna.yaml"
+      config: "{{PATH_TO_REPO}}/pickett_bcr_abl_pipeline/config/multiqc_config_rna.yaml"
       included_unit_types: ["R"]
       qc_files:
         - "qc/fastqc/{sample}_{type}_{flowcell}_{lane}_{barcode}_{read}_fastqc.zip"
@@ -93,11 +93,11 @@ multiqc:
 # rseqc_bam_stats:
 
 rseqc_gene_body_coverage:
-  bed: "config/bcr_abl1_rseqc.bed"
+  bed: "{{PATH_TO_REPO}}/pickett_bcr_abl_pipeline/config/bcr_abl1_rseqc.bed"
   container: "docker://hydragenetics/rseqc:4.0.0"
 
 rseqc_inner_distance:
-  bed: "config/bcr_abl1_rseqc.bed"
+  bed: "{{PATH_TO_REPO}}/pickett_bcr_abl_pipeline/config/bcr_abl1_rseqc.bed"
   container: "docker://hydragenetics/rseqc:4.0.0"
 
 sample_order_for_multiqc:
@@ -113,7 +113,7 @@ star_fusion:
   genome_path: ""
 
 summary_report:
-  branford: "config/branford_SNVs_230118.bed"
+  branford: "{{PATH_TO_REPO}}/pickett_bcr_abl_pipeline/config/branford_SNVs_230118.bed"
 
 trimmer_software: "fastp_pe"
 
