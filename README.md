@@ -70,7 +70,6 @@ Reference files should be specified in [`config.yaml`](config/config.yaml)
     -  known fusions list
     -  Cytobands
  - rseq bedfile
- - `SampleSheet.csv` for sorting samples in MultiQC report
  - Background-file to annotate calls with (see more [below](#backgroundreference-pipeline))
 
 ### Containers
