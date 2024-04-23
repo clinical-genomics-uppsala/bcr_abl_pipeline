@@ -26,9 +26,6 @@ rule all:
         compile_output_file_list,
 
 
-# modules
-
-
 module annotation:
     snakefile:
         github(
@@ -64,7 +61,7 @@ module prealignment:
         github(
             "hydra-genetics/prealignment",
             path="workflow/Snakefile",
-            tag="1f55599",
+            tag="v1.2.0",
         )
     config:
         config
@@ -78,7 +75,7 @@ module alignment:
         github(
             "hydra-genetics/alignment",
             path="workflow/Snakefile",
-            tag="972bef3",
+            tag="v0.6.0",
         )
     config:
         config
@@ -131,7 +128,7 @@ module fusions:
         github(
             "hydra-genetics/fusions",
             path="workflow/Snakefile",
-            tag="35ed724",
+            tag="v0.1.0",
         )
     config:
         config
