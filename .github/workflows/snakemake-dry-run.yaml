@@ -34,7 +34,7 @@ jobs:
       - name: snakemake dry run
         working-directory: .tests/integration
         run: |
-          snakemake -n -s ../../workflow/Snakefile --configfiles ../../config/config.yaml config.yaml
+          snakemake -n -s ../../workflow/Snakefile --configfiles ../../config/config.yaml config.yaml --config PATH_TO_REPO=../../../
   
   snakemake-dry-run-background:
     name: Run snakemake dry run background
@@ -54,4 +54,4 @@ jobs:
       - name: snakemake dry run
         working-directory: .tests/integration
         run: |
-          snakemake -n -s ../../workflow/Snakefile_background.smk --configfiles ../../config/config.yaml config.yaml ../../config/config_background.yaml config_background.yaml
+          snakemake -n -s ../../workflow/Snakefile_background.smk --configfiles ../../config/config.yaml config.yaml ../../config/config_background.yaml config_background.yaml --config PATH_TO_REPO=../../../

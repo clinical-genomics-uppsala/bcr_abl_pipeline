@@ -1,12 +1,10 @@
 resources: "resources.yaml"
 samples: "samples.tsv"
 units: "units.tsv"
-output: "../../config/output_files.yaml"
 
 reference:
   fasta: "references/ref.fasta"
   fai: "references/ref.fasta.fai"
-  design_bed: "references/bedfile.bed"
   background: "references/background.tsv"
 
 arriba:
@@ -30,17 +28,6 @@ fusioncatcher:
 mosdepth_bed:
   design_bed: "references/bedfile.bed"
 
-multiqc:
-  reports:
-    RNA:
-      config: "../../config/multiqc_config_rna.yaml"
-
-rseqc_gene_body_coverage:
-  bed: "references/bedfile.bed"
-
-rseqc_inner_distance:
-  bed: "references/bedfile.bed"
-
 star:
   genome_index: "references/"
   extra: "--outSAMmapqUnique 60 --quantMode GeneCounts --sjdbGTFfile references/ref.gtf --outSAMtype BAM SortedByCoordinate --chimSegmentMin 10 --chimOutType WithinBAM SoftClip --chimJunctionOverhangMin 10 --chimScoreMin 1 --chimScoreDropMax 30 --chimScoreJunctionNonGTAG 0 --chimScoreSeparation 1 --alignSJstitchMismatchNmax 5 -1 5 5 --chimSegmentReadGapMax 3"
@@ -48,5 +35,3 @@ star:
 star_fusion:
   genome_path: "references/"
 
-summary_report:
-  branford: "references/bedfile.bed"

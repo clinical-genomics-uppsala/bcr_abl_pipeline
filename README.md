@@ -70,7 +70,6 @@ Reference files should be specified in [`config.yaml`](config/config.yaml)
     -  known fusions list
     -  Cytobands
  - rseq bedfile
- - `SampleSheet.csv` for sorting samples in MultiQC report
  - Background-file to annotate calls with (see more [below](#backgroundreference-pipeline))
 
 ### Containers
@@ -82,17 +81,19 @@ To do a dry-run test, `.tests/integration` can be used:
 
 ```bash
 $> cd .tests/integration
-$> snakemake -n -s ../../workflow/Snakefile --configfiles ../../config/config.yaml config.yaml
+$> snakemake -n -s ../../workflow/Snakefile --configfiles ../../config/config.yaml config.yaml --config PATH_TO_REPO=/path/to/repo/
 ```
+> **_NOTE:_**   If using the variable `PATH_TO_REPO` (folder containing `pickett_bcr_abl_pipeline`) in the config-file this need to be defined in the commandline
 
 ## :rocket: Usage
 
 To run the workflow [`resources.yaml`](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/blob/master/config/resources.yaml) is needed together with a [snakemake profile](https://github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/blob/master/snakemake_profile/config.yaml). 
 
 ```bash
-$> snakemake --profile path_to_snakemake_profile/ -s workflow/Snakefile --configfile config.yaml
+$> snakemake --profile path_to_snakemake_profile/ -s workflow/Snakefile --configfile config.yaml --config PAH_TO_REPO=/path/to/repo
 ```
-
+> **_NOTE:_**  If using the variable `PATH_TO_REPO` in the config-file this need to be defined in the commandline
+    
 ### Output files
 
 The following output files will be saved (remaining files are deleted after completed run):
@@ -132,6 +133,8 @@ To run the background pipeline you simply use the `Snakefile_background.smk` and
 ```bash
 $> snakemake --profile path_to_snakemake_profile/ -s workflow/Snakefile_background.smk --configfiles config/config.yaml config/config_background.yaml
 ```
+
+> **_NOTE:_**   If using the variable `PATH_TO_REPO` in the config this need to be defined in the commandline
 
 ### Output files
 | File | Description |

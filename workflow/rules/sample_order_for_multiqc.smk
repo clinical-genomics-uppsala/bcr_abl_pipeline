@@ -5,13 +5,11 @@ __license__ = "GPL-3"
 
 
 rule sample_order_for_multiqc:
-    input:
-        sample_sheet=config["sample_order_for_multiqc"]["sample_sheet"],
     output:
         replacement="qc/multiqc/sample_replacement.tsv",
         order="qc/multiqc/sample_order.tsv",
     params:
-        extra=config.get("sample_order_for_multiqc", {}).get("extra", ""),
+        filelist=[(u.sample, u.fastq1) for u in units[units.type == "R"].itertuples()],
     log:
         "qc/multiqc/sample_order.tsv.log",
     benchmark:
@@ -28,6 +26,6 @@ rule sample_order_for_multiqc:
     container:
         config.get("sample_order_for_multiqc", {}).get("container", config["default_container"])
     message:
-        "{rule}: Create a sample order tsv based on {input.sample_sheet} for multiqc"
+        "{rule}: Create a sample order tsv based on S_index in {params.filelist} for multiqc"
     script:
         "../scripts/sample_order_for_multiqc.py"
