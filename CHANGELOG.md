@@ -1,5 +1,33 @@
 # Changelog
 
+## [0.2.0](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/compare/v0.1.0...v0.2.0) (2024-04-24)
+
+
+### Features
+
+* add background annotation to vcf ([688b797](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/688b79752066e5584aaa1976c22820c5c94f7243))
+* add background annotation to xlsx ([c8ef16a](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/c8ef16ad5704071666da1d98ff03e434ddd73c38))
+* add background creation in seperate snakefile ([58018c0](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/58018c09af775214b277ca29446b7eb5ce53cc50))
+* add background levels to vcf and xlsx report ([9359b21](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/9359b2160bab496b6890973cca80fc39fca578ef))
+* add varible function to config (PATH_TO_REPO) ([e7ed2a9](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/e7ed2a9703cd4f4743e0dee69cee5e8546a8ebc8))
+* change pisces to genome vcf and add reference module to create background file ([6b9d5f6](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/6b9d5f6a819465837eb7c0c6251d769202988a7e))
+* remove use of SampleSheet, instead base multiqc-order on S-index ([a6415d2](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/a6415d21c68ad8bb6f345864f30b27f9b47f2d21))
+
+
+### Bug Fixes
+
+* fix pulp version to < 2.8 ([9a70ac7](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/9a70ac7c6d57cc26a16fe241beb1a3e357a6a856))
+* lock smart_open to <7.0.0 ([2adfec1](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/2adfec185044e7afa72e01ba37426d5efb7353bd))
+* path to fastp for multiqc updated ([5a97c2d](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/5a97c2db9262ce1b5cb8e18aceb8dcd9d68c1bef))
+* remove unused ruleorder and small style changes ([3202054](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/3202054cfc9b3bb6ffe251bc5e7815784d13c6b3))
+* update output files to remove log and benchmark files in Results ([7d1803c](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/7d1803c00e805270b05c5f6d0e9e466382a6cecd))
+
+
+### Documentation
+
+* fix dead link and output message in rule ([1ac9fdb](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/1ac9fdb4b46bb9860c10fbe081a5ae7f8147dfda))
+* update readme ([a5aafb0](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/a5aafb0665cef0905c161a76cfc82b41b35e681f))
+
 ## 0.1.0 (2023-03-27)
 
 
