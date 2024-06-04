@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.1](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/compare/v0.2.0...v0.2.1) (2024-06-04)
+
+
+### Bug Fixes
+
+* update README.md ([b5a9d21](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/b5a9d21dfc280ac0a8f8a9a7feb93c360ceac4e2))
+
 ## [0.2.0](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/compare/v0.1.0...v0.2.0) (2024-04-24)
 
 
