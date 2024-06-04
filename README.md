@@ -31,7 +31,7 @@ In order to use this module, the following dependencies are required:
 
 [![hydra-genetics](https://img.shields.io/badge/hydragenetics-v1.14.1-blue)](https://github.com/hydra-genetics/)
 [![pandas](https://img.shields.io/badge/pandas-1.3.1-blue)](https://pandas.pydata.org/)
-[![python](https://img.shields.io/badge/python-3.8-blue)]
+[![python](https://img.shields.io/badge/python-3.9-blue)]
 [![snakemake](https://img.shields.io/badge/snakemake-7.18.2-blue)](https://snakemake.readthedocs.io/en/stable/)
 [![singularity](https://img.shields.io/badge/singularity-3.0.0-blue)](https://sylabs.io/docs/)
 
@@ -100,7 +100,7 @@ The following output files will be saved (remaining files are deleted after comp
 
 | File | Description |
 |---|---|
-| `Results/MultiQC_R.html` | Summarized QC values in [MultiQC](https://multiqc.info/) report |
+| `Results/multiqc_RNA.html` | Summarized QC values in [MultiQC](https://multiqc.info/) report |
 | `Results/${sample}_R_summary.xlsx` | Xlsx report with Branford list, coverage and Arriba results summarized |
 | `Results/${sample}_R/${sample}_R.bam(.bai)` | Alignment file from [STAR aligner](https://github.com/alexdobin/STAR) with index |
 | `Results/${sample}_R/${sample}_R.normalized.sorted.background_annotated.vcf.gz(.tbi)` | Variant file produced by [Illumina Pisces](https://github.com/Illumina/Pisces) variant caller with index |
