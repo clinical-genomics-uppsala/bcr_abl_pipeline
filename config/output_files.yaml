@@ -3,7 +3,7 @@ directory: ./Results
 files:
   - name: MultiQC
     input: "qc/multiqc/multiqc_RNA.html"
-    output: "MultiQC_R.html"
+    output: "multiqc_RNA.html"
 
   - name: bam file
     input: "alignment/star/{sample}_R.bam"
