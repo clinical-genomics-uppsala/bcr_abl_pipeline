@@ -1,5 +1,12 @@
 # Changelog
 
+### [0.2.2](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/compare/v0.2.1...v0.2.2) (2024-08-23)
+
+
+### Bug Fixes
+
+* if missing PanelMedian set to NA and do not break ([4da94af](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/commit/4da94af11390cfb1f397ca452937403c3a6d36b5))
+
 ### [0.2.1](https://www.github.com/clinical-genomics-uppsala/pickett_bcr_abl_pipeline/compare/v0.2.0...v0.2.1) (2024-06-04)
 
 
