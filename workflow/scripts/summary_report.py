@@ -66,11 +66,11 @@ for record in vcf.fetch():
     else:
         filter = ", ".join(list(record.filter))
 
-    bkg_median = record.info["PanelMedian"]
-    if bkg_median == 0:
+    if len(record.ref) != 1 or len(record.alts[0]) != 1:
         bkg_median = "NA"
         bkg_nr_sd = "NA"
     else:
+        bkg_median = record.info["PanelMedian"]
         bkg_nr_sd = record.info["PositionNrSD"]
 
     outline = [
